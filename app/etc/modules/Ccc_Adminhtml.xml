@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ccc_Adminhtml>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Ccc_Adminhtml>
+    </modules>
+</config>
