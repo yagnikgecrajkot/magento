@@ -78,7 +78,7 @@ class Mage_Adminhtml_Block_Widget_Container extends Mage_Adminhtml_Block_Templat
         $this->_buttons[$level][$id] = $data;
         $this->_buttons[$level][$id]['area'] = $area;
         if ($sortOrder) {
-            $this->_buttons[$level][$id]['sort_order'] = $sortOrder;
+            $this->_buttons[$level][$id]['sort_order'] = $w;
         } else {
             $this->_buttons[$level][$id]['sort_order'] = count($this->_buttons[$level]) * 10;
         }

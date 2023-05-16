@@ -1,5 +1,5 @@
 <?php
-class Ccc_Vendor_Helper_Data extends Mage_Core_Helper_Abstract
+class Ccc_Salesman_Helper_Data extends Mage_Core_Helper_Abstract
 {
     public function __construct()
     {

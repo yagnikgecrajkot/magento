@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Ccc_Salesman>    
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </Ccc_Salesman>
     </modules>
     <frontend>
@@ -24,6 +24,26 @@
         </layout>
     </frontend>
     <global>
+        <resources>
+            <salesman_setup>
+                <setup>
+                    <module>Ccc_Salesman</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </salesman_setup>
+            <salesman_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </salesman_write>
+            <salesman_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </salesman_read>
+        </resources>s
         <models>
             <salesman>
                 <class>Ccc_Salesman_Model</class>
@@ -39,6 +59,9 @@
                     <salesman_address>
                         <table>salesman_address</table>
                     </salesman_address>
+                    <salesman_price>
+                        <table>salesman_price</table>
+                    </salesman_price>
                 </entities>
             </salesman_resource>
         </models>
