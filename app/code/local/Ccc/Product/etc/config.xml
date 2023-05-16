@@ -24,6 +24,26 @@
         </layout>
     </frontend>
     <global>
+        <resources>
+            <product_setup>
+                <setup>
+                    <module>Ccc_Product</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </product_setup>
+            <product_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </product_write>
+            <product_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </product_read>
+        </resources>
         <models>
             <product>
                 <class>Ccc_Product_Model</class>
@@ -36,9 +56,6 @@
                     <product>
                         <table>product</table>
                     </product>
-                    <product_address>
-                        <table>product_address</table>
-                    </product_address>
                 </entities>
             </product_resource>
         </models>

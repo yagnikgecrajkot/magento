@@ -15,6 +15,9 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
    
     public function editAction(){
         $id = $this->getRequest()->getParam('salesman_id');
+        if ($id) {
+            
+        }
         $model = Mage::getModel('salesman/salesman')->load($id);
         $modelAddress = Mage::getModel('salesman/salesman_address')->load($id, 'salesman_id');
 
@@ -50,7 +53,6 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
     public function saveAction()
     {
         if ($data = $this->getRequest()->getPost()) {
-            echo'<pre>';
             $model = Mage::getModel('salesman/salesman');
             $salesmanId = $this->getRequest()->getParam('salesman_id');
             $model->setData($data['salesman'])->setId($salesmanId);
@@ -119,7 +121,7 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
     {
         $salesmanId = $this->getRequest()->getParam('salesman_id');
         if(!is_array($salesmanId)) {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('salesman/salesman')->__('Please select tax(es).'));
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('salesman')->__('Please select tax(es).'));
         } else {
             try {
                 $model = Mage::getModel('salesman/salesman');
@@ -128,7 +130,7 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
                 }
                 
                 Mage::getSingleton('adminhtml/session')->addSuccess(
-                    Mage::helper('salesman/salesman')->__('Total of %d record(s) were deleted.', count($salesmanId))
+                    Mage::helper('salesman')->__('Total of %d record(s) were deleted.', count($salesmanId))
                 );
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -137,6 +139,50 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
          
         $this->_redirect('*/*/index');
     }
+
+    public function massPriceDeleteAction()
+    {
+        $entityId = $this->getRequest()->getParam('entity_id');
+        if(!is_array($entityId)) {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('salesman')->__('Please select tax(es).'));
+        } else {
+            try {
+                $model = Mage::getModel('salesman/salesman_price');
+                foreach ($entityId as $id) {
+                    $model->load($id);
+                    $sId = $model->salesman_id;
+                    $model->delete();
+                }
+                
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('salesman')->__('Total of %d record(s) were deleted.', count($entityId))
+                );
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        }
+         
+        $this->_redirect('*/*/edit',['salesman_id'=>$sId]);
+    }
+
+    public function updatePriceAction()
+    {
+        $data = $this->getRequest()->getPost();
+        echo'<pre>';
+        print_r($data);
+        die;
+        
+    }
+
+    public function massUpdateAction()
+    {
+        $data = $this->getRequest()->getPost();
+        echo'<pre>';
+        print_r($data);
+        die;
+        
+    }
+
 
 
 }
