@@ -55,13 +55,13 @@
     </global>
     <admin>
         <routers>
-            <Vendor>
+            <vendor>
                 <use>admin</use>
                 <args>
                     <module>Ccc_Vendor</module>
                     <frontName>vendor</frontName>
                 </args>
-            </Vendor>
+            </vendor>
         </routers>
          <layout>
             <updates>

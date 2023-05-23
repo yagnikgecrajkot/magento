@@ -5,15 +5,15 @@
             <title>Vendor</title>
             <sort_order>10</sort_order>
             <children>
-                <managevender translate="title" module="vendor">
+                <manage translate="title" module="vendor">
                     <title>Manage Vendor</title>
                     <action>vendor/adminhtml_vendor/index</action>
                     <sort_order>10</sort_order>
-                </managevender>
+                </manage>
                 </children>
         </vendor>
-       </menu>
-       <acl>
+    </menu>
+    <acl>
         <resources>
             <admin>
                 <children>
@@ -21,11 +21,11 @@
                         <title>vendors</title>
                         <sort_order>40</sort_order>
                         <children>
-                             <managevender translate="title" module="vendor">
+                             <manage translate="title" module="vendor">
                                 <title>Manage vendor</title>
                                 <action>vendor/adminhtml_vendor/index</action>
                                 <sort_order>10</sort_order>
-                            </managevender>
+                            </manage>
                         </children>
                     </vendor>
                     <system>

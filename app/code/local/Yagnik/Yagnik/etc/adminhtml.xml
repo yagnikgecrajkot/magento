@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <yagnik translate="title" module="yagnik">
+            <title>Yagnik</title>
+            <sort_order>10</sort_order>
+            <children>
+                <manageyagnik translate="title" module="yagnik">
+                    <title>Manage Yagnik</title>
+                    <action>yagnik/adminhtml_yagnik/index</action>
+                    <sort_order>10</sort_order>
+                </manageyagnik>
+                </children>
+        </yagnik>
+       </menu>
+       <acl>
+        <resources>
+            <admin>
+                <children>
+                    <yagnik translate="title" module="yagnik">
+                        <title>yagniks</title>
+                        <sort_order>40</sort_order>
+                        <children>
+                             <manageyagnik translate="title" module="yagnik">
+                                <title>Manage Yagnik</title>
+                                <action>yagnik/adminhtml_yagnik/index</action>
+                                <sort_order>10</sort_order>
+                            </manageyagnik>
+                        </children>
+                    </yagnik>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <yagnik translate="title" module="yagnik">
+                                        <title>yagniks Section</title>
+                                        <sort_order>50</sort_order>
+                                    </yagnik>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
