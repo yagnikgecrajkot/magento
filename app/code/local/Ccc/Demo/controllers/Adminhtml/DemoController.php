@@ -1,43 +1,46 @@
 <?php
 
-class Ccc_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Action
+class Ccc_Demo_Adminhtml_DemoController extends Mage_Adminhtml_Controller_Action
 {
     
     function indexAction()
     {
         $this->_title($this->__('Vendor'))
-             ->_title($this->__('Manage Vendors'));
+             ->_title($this->__('Manage Demo'));
         $this->loadLayout();
-        $this->_setActiveMenu('vendor/manage');
-        $this->_addContent($this->getLayout()->createBlock('vendor/adminhtml_vendor'));
+        $this->_setActiveMenu('demo/manage');
+        $this->_addContent($this->getLayout()->createBlock('demo/adminhtml_demo'));
         $this->renderLayout();
     }
 
    
     public function editAction(){
-        $id = $this->getRequest()->getParam('vendor_id');
-        $model = Mage::getModel('vendor/vendor')->load($id);
-        $modelAddress = Mage::getModel('vendor/vendor_address')->load($id, 'vendor_id');
+        $id = $this->getRequest()->getParam('attribute_id');
+        if ($id) {
+            $model = Mage::getModel('demo/demo');
+        }else{
+            $model = Mage::getModel('demo/demo')->load($id);
+
+        }
 
         if ($model->getId() || $id == 0) {
             $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
             if (!empty($data)) {
                 $model->setData($data);
             }
-            Mage::register('current_vendor', $model);
-            Mage::register('vendor_address', $modelAddress);
+            Mage::register('current_demo', $model);
                  
             $this->loadLayout();
-            $this->_setActiveMenu('vendor/items');
+            $this->_setActiveMenu('demo/items');
              
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Vendor Manager'), Mage::helper('adminhtml')->__('Vendor Manager'));
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Vendor News'), Mage::helper('adminhtml')->__('Vendor News'));
+            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('demo Manager'), Mage::helper('adminhtml')->__('demo Manager'));
+            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('demo News'), Mage::helper('adminhtml')->__('demo News'));
              
-            $this->_addContent($this->getLayout()->createBlock(' vendor/adminhtml_vendor_edit'))
-            ->_addLeft($this->getLayout()->createBlock('vendor/adminhtml_vendor_edit_tabs'));
+            $this->_addContent($this->getLayout()->createBlock(' demo/adminhtml_demo_edit'))
+            ->_addLeft($this->getLayout()->createBlock('demo/adminhtml_demo_edit_tabs'));
             $this->renderLayout();
         } else {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('vendor')->__('Vendor does not exist'));
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('demo')->__('Vendor does not exist'));
             $this->_redirect('*/*/');
         }
 
