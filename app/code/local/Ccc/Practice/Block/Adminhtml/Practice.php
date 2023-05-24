@@ -1,6 +1,6 @@
 <?php
 
-class Ccc_Category_Block_Adminhtml_Category extends Mage_Adminhtml_Block_Widget_Grid_Container
+class Ccc_Practice_Block_Adminhtml_Practice extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
 
     public function __construct()
