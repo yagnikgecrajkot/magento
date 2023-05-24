@@ -29,6 +29,11 @@
                 <class>Ccc_Practice_Model</class>
                 <resourceModel>practice_resource</resourceModel>
             </practice>
+            <catalog>
+                <rewrite>
+                    <product>Ccc_Practice_Model_Product</product>
+                </rewrite>
+            </catalog>
             <practice_resource>
                 <class>Ccc_Practice_Model_Resource</class>
                 <deprecatedNode>practice_mysql4</deprecatedNode>
@@ -39,15 +44,47 @@
                 </entities>
             </practice_resource>
         </models>
+        <events>
+           <cms_page_prepare_save>
+            <observers>
+               <Ccc_Practice_Model_Observer>
+                   <type>singleton</type>
+                   <class>Ccc_Practice_Model_Observer</class>
+                   <method>saveCmsPageObserve</method>
+                </Ccc_Practice_Model_Observer>
+               </observers>
+          </cms_page_prepare_save>
+        </events>
         <blocks>
             <practice>
                 <class>Ccc_Practice_Block</class>
             </practice>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_grid>Ccc_Practice_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
-           <practice>
-                  <class>Ccc_Practice_Helper</class>
+            <practice>
+                <class>Ccc_Practice_Helper</class>
+                <rewrite>
+                    <data>Ccc_Practice_Helper_NewData</data>
+                </rewrite>
             </practice>
         </helpers>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <use>admin</use>
+                <args>
+                    <!-- <modules>
+                        <ccc_practice before="Mage_Adminhtml_Catalog">Ccc_Practice_Adminhtml</ccc_practice>
+                    </modules> -->
+                    <frontName>vendor</frontName>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>

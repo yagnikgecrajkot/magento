@@ -63,12 +63,5 @@
                 </args>
             </vendor>
         </routers>
-         <layout>
-            <updates>
-                <vendor>
-                    <file>vendor.xml</file>
-                </vendor>
-            </updates>
-        </layout>
     </admin>
 </config>
