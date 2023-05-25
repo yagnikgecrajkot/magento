@@ -10,7 +10,7 @@ class Ccc_Salesman_Block_Adminhtml_Salesman_Edit_Tab_Price_Renderer_Price extend
 
         $html = '<input type="text" id="' . $inputId . '" name="salesman_price[' . $row->product_id . ']" value="' . $inputValue . '" class="input-text">';
         return $html;
-}
+    }
 
    
 }

@@ -1,100 +1,113 @@
-<?php
+<?php 
 
 class Yagnik_Yagnik_Adminhtml_YagnikController extends Mage_Adminhtml_Controller_Action
 {
-    public function indexAction()
+	public function indexAction(){
+		$this->loadLayout();
+		$this->_setActiveMenu('yagnik');
+		$this->_title('yagnik Grid');
+		$this->_addContent($this->getLayout()->createBlock('yagnik/adminhtml_yagnik'));
+		$this->renderLayout();
+	}
+
+	protected function _initYagnik()
     {
         $this->_title($this->__('yagnik'))
-             ->_title($this->__('yagnik'));
-        $this->loadLayout();
-        $this->_setActiveMenu('yagnik');
-        $this->_addContent($this->getLayout()->createBlock('yagnik/adminhtml_yagnik'));
-        $this->renderLayout();
-    }
+            ->_title($this->__('Manage yagniks'));
 
-    public function newAction() {
-        $this->_forward('edit');
-    }
+        $yagnikId = (int) $this->getRequest()->getParam('id');
+        $yagnik   = Mage::getModel('yagnik/yagnik')
+            ->setStoreId($this->getRequest()->getParam('store', 0))
+            ->load($yagnikId);
 
-    public function editAction() {
-        $id = $this->getRequest()->getParam('entity_id');
-        $model = Mage::getModel('yagnik/yagnik')->load($id);
-        if ($model->getId() || $id == 0) {
-            $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
-            if (!empty($data)) {
-                $model->setData($data);
+        if (!$yagnikId) {
+            if ($setId = (int) $this->getRequest()->getParam('set')) {
+                $yagnik->setAttributeSetId($setId);
             }
-
-            Mage::register('yagnik_data', $model);
-            $this->loadLayout();
-            $this->_setActiveMenu('yagnik/items');
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item Manager'), Mage::helper('adminhtml')->__('Item Manager'));
-            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item News'), Mage::helper('adminhtml')->__('Item News'));
-            $this->_addContent($this->getLayout()->createBlock(' yagnik/adminhtml_yagnik_edit'))
-                ->_addLeft($this->getLayout()
-                ->createBlock('yagnik/adminhtml_yagnik_edit_tabs'));
-            $this->renderLayout();
-        } else {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('yagnik')->__('Data does not exist'));
-            $this->_redirect('*/*/');
         }
+
+        Mage::register('current_yagnik', $yagnik);
+        Mage::getSingleton('cms/wysiwyg_config')->setStoreId($this->getRequest()->getParam('store'));
+        return $yagnik;
     }
 
-    public function saveAction()
+	public function newAction(){
+		$this->_forward('edit');
+	}
+
+	public function editAction(){ 
+		$yagnikId = (int) $this->getRequest()->getParam('id');
+        $yagnik   = $this->_initYagnik();
+        
+        if ($yagnikId && !$yagnik->getId()) {
+            $this->_getSession()->addError(Mage::helper('yagnik')->__('This yagnik no longer exists.'));
+            $this->_redirect('*/*/');
+            return;
+        }
+
+        $this->_title($yagnik->getName());
+
+        $this->loadLayout();
+
+        $this->_setActiveMenu('yagnik/yagnik');
+
+        $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+        $this->renderLayout();
+	}
+
+	public function saveAction()
     {
         try {
-            $yagnikModel = Mage::getModel('yagnik/yagnik');
-            $yagnikData = $this->getRequest()->getPost('yagnik');
-            $yagnikModel->setData($yagnikData)
-                ->setId($this->getRequest()->getParam('id'));
+            $setId = (int) $this->getRequest()->getParam('set');
+            $yagnikData = $this->getRequest()->getPost('account');            
+            $yagnik = Mage::getSingleton('yagnik/yagnik');
+            $yagnik->setAttributeSetId($setId);
 
-            if ($yagnikModel->entity_id == NULL) {
-                $yagnikModel->created_at = date("y-m-d H:i:s");
-            } else {
-                $yagnikModel->updated_at = date("y-m-d H:i:s");
-            }
-
-            $yagnikModel->save();
-
-            Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('yagnik')->__('Data was successfully saved'));
-            Mage::getSingleton('adminhtml/session')->setFormData(true);
-
-            if ($this->getRequest()->getParam('back')) {
-                $this->_redirect('*/*/edit', array('id' => $yagnikModel->getId()));
-                return;
-            }
-            $this->_redirect('*/*/');
-            return;
-        } catch (Exception $e) {
-            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-            Mage::getSingleton('adminhtml/session')->setFormData($data);
-            $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-            return;
-        }
-    }
-
-    public function massDeleteAction()
-    {
-        $yagnikIds = $this->getRequest()->getParam('entity_id');
-        if(!is_array($yagnikIds)) {
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('yagnik/yagnik')->__('Please select data(s).'));
-        } else {
-            try {
-                $model = Mage::getModel('yagnik/yagnik');
-                foreach ($yagnikIds as $yagnikId) {
-                    $model->load($yagnikId)->delete();
+            if ($yagnikId = $this->getRequest()->getParam('id')) {
+                if (!$yagnik->load($yagnikId)) {
+                    throw new Exception("No Row Found");
                 }
-                Mage::getSingleton('adminhtml/session')->addSuccess(
-                Mage::helper('yagnik')->__(
-                    'Total of %d record(s) were deleted.', count($yagnikIds)
-                )
-                );
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
             }
+            
+            $yagnik->addData($yagnikData);
+
+            $yagnik->save();
+
+            Mage::getSingleton('core/session')->addSuccess("yagnik data added.");
+            $this->_redirect('*/*/');
+
+        } catch (Exception $e) {
+            Mage::getSingleton('core/session')->addError($e->getMessage());
+            $this->_redirect('*/*/');
         }
-        $this->_redirect('*/*/index');
     }
 
+    public function deleteAction()
+    {
+        try {
 
+            $yagnikModel = Mage::getModel('yagnik/yagnik');
+
+            if (!($yagnikId = (int) $this->getRequest()->getParam('id')))
+                throw new Exception('Id not found');
+
+            if (!$yagnikModel->load($yagnikId)) {
+                throw new Exception('yagnik does not exist');
+            }
+
+            if (!$yagnikModel->delete()) {
+                throw new Exception('Error in delete record', 1);
+            }
+
+            Mage::getSingleton('core/session')->addSuccess($this->__('The yagnik has been deleted.'));
+
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $Mage::getSingleton('core/session')->addError($e->getMessage());
+        }
+        
+        $this->_redirect('*/*/');
+    }
 }
