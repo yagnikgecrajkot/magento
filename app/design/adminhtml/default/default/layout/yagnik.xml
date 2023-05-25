@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+	<yagnik_adminhtml_yagnik_attribute_edit>
+		<reference name="content">
+			<block type="yagnik/adminhtml_yagnik_attribute_edit" name="yagnikAttributeEdit"/>
+		</reference>
+		 <reference name="left">
+            <block type="yagnik/adminhtml_yagnik_attribute_edit_tabs" name="yagnik_edit_tabs"></block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" name="attribute_edit_js" template="yagnik/attribute/js.phtml"></block>
+        </reference>
+	</yagnik_adminhtml_yagnik_attribute_edit>
+	
+	<yagnik_adminhtml_yagnik_edit>
+		<reference name="content">
+			<block type="yagnik/adminhtml_yagnik_edit" name="yagnikEdit"/>
+		</reference>
+		<reference name="left">
+			<block type="yagnik/adminhtml_yagnik_edit_Tabs" name="yagnikEditTabs"/>
+		</reference>
+		<reference name="js">
+            <block type="adminhtml/catalog_product_edit_js" template="catalog/product/js.phtml" name="catalog_product_js"></block>
+            <block type="core/template" template="catalog/wysiwyg/js.phtml"/>
+        </reference>
+	</yagnik_adminhtml_yagnik_edit>	
+</layout>

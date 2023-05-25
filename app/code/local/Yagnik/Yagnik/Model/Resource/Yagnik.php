@@ -1,15 +1,11 @@
-<?php
-
-class Yagnik_Yagnik_Model_Resource_Yagnik extends Mage_Core_Model_Resource_Db_Abstract
+<?php 
+class Yagnik_Yagnik_Model_Resource_Yagnik extends Mage_Eav_Model_Entity_Abstract
 {
-    /**
-     * Initialize resource model
-     *
-     */
-    protected function _construct()
-    {
-        $this->_init('yagnik/yagnik', 'entity_id');
+	const ENTITY = 'yagnik';
+	public function __construct()
+	{
+		$this->setType(self::ENTITY)
+			 ->setConnection('core_read', 'core_write');
+	   parent::__construct();
     }
-
-    
 }
