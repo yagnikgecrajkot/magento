@@ -7,7 +7,8 @@ class Ccc_Practice_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Ca
     public function indexAction()
     {
         echo "<pre>";
-        print_r($model = new Mage_Catalog_Model_Product());
+        print_r('ererer');
+        // print_r($model = new Mage_Catalog_Model_Product());
     }
 
 }

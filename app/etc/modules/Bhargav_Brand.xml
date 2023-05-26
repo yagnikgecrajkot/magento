@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Bhargav_Brand>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Bhargav_Brand>
+    </modules>
+</config>
