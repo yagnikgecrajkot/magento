@@ -24,6 +24,26 @@
         </layout>
     </frontend>
     <global>
+        <resources>
+            <brand_setup>
+                <setup>
+                    <module>Yagnik_Brand</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </brand_setup>
+            <brand_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </brand_write>
+            <brand_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </brand_read>
+        </resources>
         <models>
             <vendor>
                 <class>Ccc_Vendor_Model</class>

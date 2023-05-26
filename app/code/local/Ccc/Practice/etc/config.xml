@@ -78,8 +78,8 @@
         <routers>
             <adminhtml>
                 <use>admin</use>
-                <args>
-                    <!-- <modules>
+                <args><!-- 
+                    <modules>
                         <ccc_practice before="Mage_Adminhtml_Catalog">Ccc_Practice_Adminhtml</ccc_practice>
                     </modules> -->
                     <frontName>vendor</frontName>
