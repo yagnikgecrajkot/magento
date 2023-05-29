@@ -2,8 +2,6 @@
 
 class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Option extends Mage_Adminhtml_Block_Widget_Grid
 {
-
-
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +20,6 @@ class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Option extends Mage_Adminhtml_Block
 
         $this->setCollection($collection);
         return parent::_prepareCollection();
-
     }
 
     protected function _prepareColumns()

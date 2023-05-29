@@ -177,7 +177,6 @@ class Yagnik_Yagnik_Adminhtml_Yagnik_AttributeController extends Mage_Adminhtml_
 
             //validate frontend_input
             if (isset($data['frontend_input'])) {
-                /** @var $validatorInputType Mage_Eav_Model_Adminhtml_System_Config_Source_Inputtype_Validator */
                 $validatorInputType = Mage::getModel('eav/adminhtml_system_config_source_inputtype_validator');
                 if (!$validatorInputType->isValid($data['frontend_input'])) {
                     foreach ($validatorInputType->getMessages() as $message) {
@@ -212,9 +211,6 @@ class Yagnik_Yagnik_Adminhtml_Yagnik_AttributeController extends Mage_Adminhtml_
                 $data['is_user_defined'] = $model->getIsUserDefined();
                 $data['frontend_input'] = $model->getFrontendInput();
             } else {
-                /**
-                * @todo add to helper and specify all relations for properties
-                */
                 $data['source_model'] = $helper->getAttributeSourceModelByInputType($data['frontend_input']);
                 $data['backend_model'] = $helper->getAttributeBackendModelByInputType($data['frontend_input']);
             }

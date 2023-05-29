@@ -83,7 +83,7 @@ class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Grid extends Mage_Eav_Block_Adminht
                     array(
                         'caption'   => Mage::helper('eavmgmt')->__('show options'),
                         'url'       => array('base'=> '*/*/showoption'),
-                        'field'     => 'eavmgmt_id'
+                        'field'     => 'eavmgmt_id',
                     )
                 ),
                 'filter'    => false,
@@ -92,7 +92,6 @@ class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Grid extends Mage_Eav_Block_Adminht
                 'is_system' => true,
         ));
 
-        $this->addExportType('*/*/exportCsv', Mage::helper('eavmgmt')->__('CSV'));
         return $this;
 
     }
