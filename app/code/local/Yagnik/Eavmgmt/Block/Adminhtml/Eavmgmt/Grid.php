@@ -7,7 +7,7 @@ class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Grid extends Mage_Eav_Block_Adminht
     {
         parent::__construct();
         $this->setId('eavmgmtAdminhtmleavmgmtGrid');
-        $this->setDefaultSort('index');
+        $this->setDefaultSort('attribute_id');
         $this->setDefaultDir('ASC');
     }
 
@@ -36,82 +36,41 @@ class Yagnik_Eavmgmt_Block_Adminhtml_eavmgmt_Grid extends Mage_Eav_Block_Adminht
             'index'=>'entity_type_code'
         ));
 
-        parent::_prepareColumns();
-     
-
-        $this->addColumnAfter('is_visible', array(
-            'header'=>Mage::helper('eavmgmt')->__('Visible'),
+        $this->addColumn('attribute_code', array(
+            'header'=>Mage::helper('eav')->__('Attribute Code'),
             'sortable'=>true,
-            'index'=>'is_visible_on_front',
-            'type' => 'options',
-            'options' => array(
-                '1' => Mage::helper('eavmgmt')->__('Yes'),
-                '0' => Mage::helper('eavmgmt')->__('No'),
-            ),
-            'align' => 'center',
-        ), 'frontend_label');
+            'index'=>'attribute_code'
+        ));
 
-        $this->addColumnAfter('is_global', array(
-            'header'=>Mage::helper('eavmgmt')->__('Scope'),
+        $this->addColumn('frontend_input', array(
+            'header'=>Mage::helper('eav')->__('Frontend Input'),
             'sortable'=>true,
-            'index'=>'is_global',
-            'type' => 'options',
-            'options' => array(
-                Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE =>Mage::helper('eavmgmt')->__('Store View'),
-                Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_WEBSITE =>Mage::helper('eavmgmt')->__('Website'),
-                Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL =>Mage::helper('eavmgmt')->__('Global'),
-            ),
-            'align' => 'center',
-        ), 'is_visible');
+            'index'=>'frontend_input'
+        ));
 
-        $this->addColumn('is_searchable', array(
-            'header'=>Mage::helper('eavmgmt')->__('Searchable'),
+        $this->addColumn('frontend_label', array(
+            'header'=>Mage::helper('eav')->__('Attribute Name'),
             'sortable'=>true,
-            'index'=>'is_searchable',
-            'type' => 'options',
-            'options' => array(
-                '1' => Mage::helper('eavmgmt')->__('Yes'),
-                '0' => Mage::helper('eavmgmt')->__('No'),
-            ),
-            'align' => 'center',
-        ), 'is_user_defined');
+            'index'=>'frontend_label'
+        ));
 
-        $this->addColumnAfter('is_filterable', array(
-            'header'=>Mage::helper('eavmgmt')->__('Use in Layered Navigation'),
+        $this->addColumn('backend_input', array(
+            'header'=>Mage::helper('eav')->__('Backend Input'),
             'sortable'=>true,
-            'index'=>'is_filterable',
-            'type' => 'options',
-            'options' => array(
-                '1' => Mage::helper('eavmgmt')->__('Filterable (with results)'),
-                '2' => Mage::helper('eavmgmt')->__('Filterable (no results)'),
-                '0' => Mage::helper('eavmgmt')->__('No'),
-            ),
-            'align' => 'center',
-        ), 'is_searchable');
+            'index'=>'backend_input'
+        ));
 
-        $this->addColumnAfter('is_comparable', array(
-            'header'=>Mage::helper('eavmgmt')->__('Comparable'),
+        $this->addColumn('attribute_id', array(
+            'header'=>Mage::helper('eav')->__('Index'),
             'sortable'=>true,
-            'index'=>'is_comparable',
-            'type' => 'options',
-            'options' => array(
-                '1' => Mage::helper('eavmgmt')->__('Yes'),
-                '0' => Mage::helper('eavmgmt')->__('No'),
-            ),
-            'align' => 'center',
-        ), 'is_filterable');
+            'index'=>'attribute_id'
+        ));
 
-        $this->addColumnAfter('is_comparable', array(
-            'header'=>Mage::helper('eavmgmt')->__('Comparable'),
+        $this->addColumn('entity_type_code', array(
+            'header'=>Mage::helper('eav')->__('Entity Type Code'),
             'sortable'=>true,
-            'index'=>'is_comparable',
-            'type' => 'options',
-            'options' => array(
-                '1' => Mage::helper('eavmgmt')->__('Yes'),
-                '0' => Mage::helper('eavmgmt')->__('No'),
-            ),
-            'align' => 'center',
-        ), 'is_filterable');
+            'index'=>'entity_type_code'
+        ));
 
 
         $this->addColumn('action',
