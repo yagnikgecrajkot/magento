@@ -63,7 +63,7 @@ class Yagnik_Eavmgmt_Adminhtml_EavmgmtController extends Mage_Adminhtml_Controll
              $this->_redirect('*/*/index');
     }
 
-    public function showoptionAction()
+    public function showOptionAction()
     {
        
         $this->_title($this->__('Eavmgmt'))
