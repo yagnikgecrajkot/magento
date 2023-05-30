@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <idx translate="title" module="idx">
+            <title>Idx</title>
+            <sort_order>10</sort_order>
+            <children>
+                <manage translate="title" module="idx">
+                    <title>Manage Idx</title>
+                    <action>idx/adminhtml_idx/index</action>
+                    <sort_order>10</sort_order>
+                </manage>
+                </children>
+        </idx>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <idx translate="title" module="idx">
+                        <title>idxs</title>
+                        <sort_order>40</sort_order>
+                        <children>
+                             <manage translate="title" module="idx">
+                                <title>Manage idx</title>
+                                <action>idx/adminhtml_idx/index</action>
+                                <sort_order>10</sort_order>
+                            </manage>
+                        </children>
+                    </idx>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <idx translate="title" module="idx">
+                                        <title>idxs Section</title>
+                                        <sort_order>50</sort_order>
+                                    </idx>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

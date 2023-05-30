@@ -27,7 +27,7 @@
         <resources>
             <brand_setup>
                 <setup>
-                    <module>Yagnik_Brand</module>
+                    <module>Ccc_Brand</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>

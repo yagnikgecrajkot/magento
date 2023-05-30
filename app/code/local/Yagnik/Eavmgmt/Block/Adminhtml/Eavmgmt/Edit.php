@@ -1,36 +1,5 @@
 <?php
-/**
- * Magento
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @eavmgmt    Mage
- * @package     Mage_Adminhtml
- * @copyright  Copyright (c) 2006-2020 Magento, Inc. (http://www.magento.com)
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 
-/**
- * Customer edit block
- *
- * @eavmgmt   Mage
- * @package    Mage_Adminhtml
- * @author      Magento Core Team <core@magentocommerce.com>
- */
 class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 
@@ -46,11 +15,6 @@ class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_W
         if ($this->_isAllowedAction('save')) {
 
             $this->_updateButton('save', 'label', Mage::helper('eavmgmt')->__('Save eavmgmt'));
-            // $this->_addButton('saveandcontinue', array(
-            //     'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
-            //     'onclick'   => 'saveAndContinueEdit(\''.$this->_getSaveAndContinueUrl().'\')',
-            //     'class'     => 'save',
-            // ), -100);
         } else {
             $this->_removeButton('save');
         }
@@ -62,39 +26,11 @@ class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_W
         }
     }
 
-    /**
-     * Retrieve text for header element depending on loaded page
-     *
-     * @return string
-     */
-    public function getHeaderText()
-    {
-        // if (Mage::registry('eavmgmt_edit')->getId()) {
-        //     return Mage::helper('eavmgmt')->__("Edit eavmgmt '%s'", $this->escapeHtml(Mage::registry('eavmgmt_edit')->getTitle()));
-        // }
-        // else {
-        //     return Mage::helper('eavmgmt')->__('New eavmgmt');
-        // }
-        return null;
-    }
-
-    /**
-     * Check permission for passed action
-     *
-     * @param string $action
-     * @return bool
-     */
     protected function _isAllowedAction($action)
     {
         return Mage::getSingleton('admin/session')->isAllowed('eavmgmt/adminhtml_eavmgmt/' . $action);
     }
 
-    /**
-     * Getter of url for "Save and Continue" button
-     * tab_id will be replaced by desired by JS later
-     *
-     * @return string
-     */
     protected function _getSaveAndContinueUrl()
     {
         return $this->getUrl('*/*/save', array(
@@ -104,11 +40,6 @@ class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_W
         ));
     }
 
-    /**
-     * Prepare layout
-     *
-     * @return Mage_Core_Block_Abstract
-     */
     protected function _prepareLayout()
     {
         $tabsBlock = $this->getLayout()->getBlock('cms_page_edit_tabs');
