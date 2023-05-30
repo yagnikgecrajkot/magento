@@ -48,37 +48,28 @@ class Ccc_Product_Adminhtml_ProductController extends Mage_Adminhtml_Controller_
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost()) {
+        try {
+            if ($data = $this->getRequest()->getPost()) {
+                $model = Mage::getModel('product/product');
+                $productId = $this->getRequest()->getParam('product_id');
+                $model->setData($data['product'])->setId($productId);
 
-            $model = Mage::getModel('product/product');
-            $productId = $this->getRequest()->getParam('product_id');
-            $model->setData($data['product'])->setId($productId);
-            try {
                 if ($model->product_id == NULL) {
                     $model->created_at = now();
                 } else {
                     $model->updated_at = now();
                 }
-                $model->save();
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('product')->__('product was successfully saved'));
-                Mage::getSingleton('adminhtml/session')->setFormData(false);
-                 
-                if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('*/*/edit', array('product_id' => $model->getId()));
-                    return;
-                }
-
-                $this->_redirect('*/*/');
-                return;
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('product_id' => $this->getRequest()->getParam('product_id')));
-                return;
+                if (!$model->save()) {
+                    throw new Exception("Product Unable to Save", 1);
+                }else{
+                    Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('product')->__('product was successfully saved'));
+                }                
             }
+            
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
         }
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('product')->__('Unable to find item to save'));
-            $this->_redirect('*/*/');
+        $this->_redirect('*/*/');
     }
 
     public function deleteAction() 

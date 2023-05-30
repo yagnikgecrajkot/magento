@@ -37,5 +37,23 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         }
     }
 
+    public function brandAction()
+    {
+        try {
+            if(Mage::getModel('idx/idx')->updateTableColumn(Mage::getModel('brand/brand'), 'brand')){
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Brand Successfully Save'));
+            }
+            else{
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Brand Already Exists'));
+            }
+            
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+        $this->_redirect('*/*/index');
+    }
+
+
+
 
 }
