@@ -53,6 +53,21 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         $this->_redirect('*/*/index');
     }
 
+    public function collectionAction()
+    {
+        try {
+            if(Mage::getModel('idx/idx')->updateTableColumn(Mage::getModel('collection/collection'), 'collection')){
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Collection Successfully Save'));
+            }
+            else{
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Collection Already Exists'));
+            }
+            
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+        $this->_redirect('*/*/index');
+    }
 
 
 
