@@ -143,19 +143,36 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
     public function collectionAction()
     {
         try {
-            if(Mage::getModel('idx/idx')->updateTableColumn(Mage::getModel('collection/collection'), 'collection')){
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Collection Successfully Save'));
-            }
-            else{
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Collection Already Exists'));
-            }
-            
-        } catch (Exception $e) {
-            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-        }
-        $this->_redirect('*/*/index');
-    }
+            $idx = Mage::getModel('idx/idx');  
+            $idxCollection = $idx->getCollection();     
+            $idxCollectionData = $idx->getCollection()->getData();
 
+            $idxBrandNames = array_column($idxCollectionData,'collection');
+            $newBrands = $idx->updateCollectionOption(array_unique($idxBrandNames));
+
+            $resource = Mage::getSingleton('core/resource');
+            $writeAdapter = $resource->getConnection('core_write');
+
+            $productIdxTable = $resource->getTableName('idx/idx');
+            $optionValueTable = $resource->getTableName('eav_attribute_option_value');
+
+            $updateQuery = "
+                UPDATE {$productIdxTable} p
+                JOIN (
+                    SELECT option_id,value
+                    FROM {$optionValueTable}
+                ) o ON p.`collection` = o.`value`
+                SET p.`collection_id` = o.`option_id`
+            ";
+
+            $writeAdapter->query($updateQuery);
+    
+            Mage::getSingleton('adminhtml/session')->addSuccess('Collection is fine now');
+        } catch (Exception $e) {
+             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+        $this->_redirect('*/*/');            
+    }
 
 
 }
