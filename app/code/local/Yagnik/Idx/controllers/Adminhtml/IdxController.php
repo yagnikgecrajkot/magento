@@ -13,11 +13,24 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         $this->renderLayout();
     }
 
+    public function editAction()
+    {
+        $this->_title($this->__('Attributes'))
+             ->_title($this->__('import Options'));
+            $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('idx/adminhtml_idx_edit'))
+                ->_addLeft($this->getLayout()
+                ->createBlock('idx/adminhtml_idx_edit_tabs'));
+
+        $this->renderLayout();
+    }
+
+
 
     public function massDeleteAction()
     {
         try {
-            $idxId = $this->getRequest()->getParam('idx_id');
+            $idxId = $this->getRequest()->getParam('index');
             if(!is_array($idxId)) {
                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('idx/idx')->__('Please select tax(es).'));
             } else {
@@ -37,16 +50,90 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         }
     }
 
+    public function importAction()
+    {
+        try {
+            Mage::getModel('idx/idx')->truncate();
+            if ($_FILES['import_options']['error'] == UPLOAD_ERR_OK) {
+                $csvFile = $_FILES['import_options']['tmp_name'];
+                $csvData = file_get_contents($csvFile);
+                $csvData = array();
+
+                if (($handle = fopen($csvFile, 'r')) !== false) {
+                    // Read each line of the file
+                    while (($data = fgetcsv($handle)) !== false) {
+                        // Convert the line into an array
+                        $row = array();
+                        foreach ($data as $value) {
+                            $row[] = $value;
+                        }
+                        // Add the row to the CSV data array
+                        $csvData[] = $row;
+                    }
+                      fclose($handle);
+                }
+
+
+                $header = [];
+                foreach ($csvData as $value)
+                {
+                    if(!$header)
+                    {
+                        $header = $value;
+                    }
+                    else
+                    {
+                        $data = array_combine($header,$value);
+
+                        $collection = Mage::getResourceModel('idx/idx_collection');
+
+                        $attribute = $collection->getData();
+
+                        $model = Mage::getModel('idx/idx');
+                        $model->setData($data)->save();
+                        // print_r($attribute);
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            
+        }
+
+        Mage::getSingleton('core/session')->addSuccess($this->__('Option inserted successfully'));
+
+        $this->_redirect('*/*/index');
+    }
+
     public function brandAction()
     {
         try {
-            if(Mage::getModel('idx/idx')->updateTableColumn(Mage::getModel('brand/brand'), 'brand')){
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Brand Successfully Save'));
+            $idx = Mage::getModel('idx/idx');       
+            $idxCollection = $idx->getCollection();
+            $idxCollectionArray = $idx->getCollection()->getData();
+            $idxBrandId = array_column($idxCollectionArray,'index');
+            $idxBrandNames = array_column($idxCollectionArray,'brand');
+            $idxBrandNames = array_combine($idxBrandId,$idxBrandNames);
+
+            $newBrands = $idx->updateBrandTable(array_unique($idxBrandNames));
+
+            $idxCollection = $idx->getCollection();
+            foreach ($idxCollection as $idx) {
+                if(!$idx->brand_id)
+                {
+                    $brand = Mage::getModel('brand/brand');
+                    $brandCollection = Mage::getModel('brand/brand')->getCollection();
+                    $brandCollection->getSelect()->where('main_table.name=?',$idx->brand);
+                    $brandData = $brandCollection->getData();
+                    $resource = Mage::getSingleton('core/resource');
+                    $connection = $resource->getConnection('core_write');
+                    $tableName = $resource->getTableName('import_product_idx');
+                    $condition = '`index` = '.$idx->index;
+                    $query = "UPDATE `{$tableName}` SET `brand_id` = {$brandData[0]['brand_id']} WHERE {$condition}";
+                    $connection->query($query); 
+                }
             }
-            else{
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('idx')->__('Brand Already Exists'));
-            }
-            
+            Mage::getSingleton('adminhtml/session')->addSuccess('Brand is fine now');
+
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
         }
