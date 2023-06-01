@@ -1,26 +1,26 @@
 <?php
 
-class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+class Yagnik_Idx_Block_Adminhtml_Idx_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 
     public function __construct()
     {
 
         $this->_objectId   = 'eavmgmt_id';
-        $this->_blockGroup = 'eavmgmt';
-        $this->_controller = 'adminhtml_eavmgmt';
-        $this->_headerText = Mage::helper('eavmgmt')->__('Manage categories');
+        $this->_blockGroup = 'idx';
+        $this->_controller = 'adminhtml_idx';
+        $this->_headerText = Mage::helper('idx')->__('Import Product Idx');
 
         parent::__construct();
         if ($this->_isAllowedAction('save')) {
 
-            $this->_updateButton('save', 'label', Mage::helper('eavmgmt')->__('Save eavmgmt'));
+            $this->_updateButton('save', 'label', Mage::helper('idx')->__('Save idx'));
         } else {
             $this->_removeButton('save');
         }
 
         if ($this->_isAllowedAction('delete')) {
-            $this->_updateButton('delete', 'label', Mage::helper('eavmgmt')->__('Delete eavmgmt'));
+            $this->_updateButton('delete', 'label', Mage::helper('idx')->__('Delete idx'));
         } else {
             $this->_removeButton('delete');
         }
@@ -28,7 +28,7 @@ class Yagnik_Eavmgmt_Block_Adminhtml_Eavmgmt_Edit extends Mage_Adminhtml_Block_W
 
     protected function _isAllowedAction($action)
     {
-        return Mage::getSingleton('admin/session')->isAllowed('eavmgmt/adminhtml_eavmgmt/' . $action);
+        return Mage::getSingleton('admin/session')->isAllowed('idx/adminhtml_eavmgmt/' . $action);
     }
 
     protected function _getSaveAndContinueUrl()

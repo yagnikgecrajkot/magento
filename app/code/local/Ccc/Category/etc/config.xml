@@ -80,12 +80,5 @@
                 </args>
             </category>
         </routers>
-         <layout>
-            <updates>
-                <category>
-                    <file>category.xml</file>
-                </category>
-            </updates>
-        </layout>
     </admin>
 </config>
