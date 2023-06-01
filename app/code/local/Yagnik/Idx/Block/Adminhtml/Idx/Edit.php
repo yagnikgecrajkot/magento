@@ -9,7 +9,7 @@ class Yagnik_Idx_Block_Adminhtml_Idx_Edit extends Mage_Adminhtml_Block_Widget_Fo
         $this->_objectId   = 'eavmgmt_id';
         $this->_blockGroup = 'idx';
         $this->_controller = 'adminhtml_idx';
-        $this->_headerText = Mage::helper('idx')->__('Manage categories');
+        $this->_headerText = Mage::helper('idx')->__('Import Product Idx');
 
         parent::__construct();
         if ($this->_isAllowedAction('save')) {

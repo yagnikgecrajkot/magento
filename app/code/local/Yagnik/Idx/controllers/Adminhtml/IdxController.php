@@ -174,5 +174,96 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         $this->_redirect('*/*/');            
     }
 
+    public function productAction()
+    {
+        try {
+            $idxTable = Mage::getSingleton('core/resource')->getTableName('import_product_idx');
 
+            $idxCollection = Mage::getModel('idx/idx')->getCollection();
+
+            foreach ($idxCollection as $idxRow) {
+                if (!$idxRow->brand_id) {
+                    throw new Exception("Brand is not fine", 1);
+                }
+                
+                if (!$idxRow->collection_id) {
+                    throw new Exception("Collection is not fine", 1);
+                }
+            }
+
+            $productTable = Mage::getSingleton('core/resource')->getTableName('catalog_product_entity'); 
+
+            foreach ($idxCollection as $idxRow) {
+                $sku = $idxRow->sku;
+                $productId = Mage::getResourceModel('catalog/product')->getIdBySku($sku);
+                if ($productId) {
+
+                    $resource = Mage::getSingleton('core/resource');
+                    $writeAdapter = $resource->getConnection('core_write');
+                    $tableName = $resource->getTableName('idx/idx');
+
+                    $query = "UPDATE `{$tableName}` SET `product_id` = {$productId} WHERE `sku` = {$sku}";
+
+                }
+            }
+
+            // Step 3: Create missing products in the product table
+            $missingProducts = $idxCollection->addFieldToFilter('product_id', 0);
+
+            foreach ($missingProducts as $missingProduct) {
+                $productData = [
+                    'entity_type_id' => 4,
+                    'attribute_set_id' => 4,
+                    'type_id' => 'simple',
+                    'sku' => $missingProduct->sku,
+                    'has_options' => 0,
+                    'required_options' => 0,
+                    'name' => $missingProduct->name,
+                    'price' => $missingProduct->price,
+                    'status' => $missingProduct->status,
+                    'visibility' => '4',
+                    'tax_class_id' => '2',
+                    'weight' => '0.5',
+                    'created_at' => now(),
+                ];
+                $storeId = Mage_Core_Model_App::ADMIN_STORE_ID;
+                $product = Mage::getModel('catalog/product');
+                $product->setStoreId($storeId)
+                        ->setData($productData)
+                        ->setStockData(array(
+                            'is_in_stock' => 1,
+                            'qty' => $missingProduct->quantity,
+                        ))
+                        ->save();
+
+                $resource = Mage::getSingleton('core/resource');
+                $writeAdapter = $resource->getConnection('core_write');
+
+                $tableName = $resource->getTableName('idx/idx');
+
+                $query = "UPDATE `{$tableName}` SET `product_id` = {$product->entity_id} WHERE `sku` = {$product->sku}";
+
+                $writeAdapter->query($query);
+
+
+            }
+
+            // Step 4: Check if all rows have Product Ids
+            $missingProductIds = $idxCollection;
+
+            if ($missingProductIds->getData()) {
+                Mage::getSingleton('adminhtml/session')->addError('There are products without Product Ids');
+            }
+
+            // Step 5: Display success message or prompt for further updates
+            else {
+                Mage::getSingleton('adminhtml/session')->addSuccess('Products are successfully imported');
+            }
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+        }
+
+        // Redirect to the desired page
+        $this->_redirect('*/*/index');
+    }
 }
