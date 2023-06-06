@@ -6,6 +6,15 @@
         </Yk_Banner>
     </modules>
     <frontend>
+        <routers>
+            <banner>
+                <use>standard</use>
+                <args>
+                    <module>Yk_Banner</module>
+                    <frontName>banner</frontName>
+                </args>
+            </banner>
+        </routers>
         <layout>
             <updates>
                 <banner module="Yk_Banner">
