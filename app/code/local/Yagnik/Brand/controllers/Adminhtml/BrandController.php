@@ -54,7 +54,6 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
     public function saveAction()
     {
         if ($data = $this->getRequest()->getPost()) {
-            echo'<pre>';
             $model = Mage::getModel('brand/brand');
             $brandId = $this->getRequest()->getParam('brand_id');
             $model->setData($data['brand'])->setId($brandId);
@@ -65,7 +64,7 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
                     $model->updated_at = now();
                 }
                 $model->save();
-                print_r($_FILES);
+
                 $uploader = new Varien_File_Uploader('image');
                 $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'gif', 'png', 'webp'));
                 $uploader->setAllowRenameFiles(false);
