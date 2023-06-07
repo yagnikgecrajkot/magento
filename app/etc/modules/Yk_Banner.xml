@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Yk_Banner>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Yk_Banner>
+    </modules>
+</config>
