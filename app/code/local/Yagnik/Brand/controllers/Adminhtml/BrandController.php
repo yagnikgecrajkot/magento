@@ -2,12 +2,6 @@
 
 class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_Action
 {
-    public function testAction()
-    {
-        $this->loadLayout();
-        $this->renderLayout();
-    }
-
     function indexAction()
     {
         $this->_title($this->__('Brand'))
@@ -59,7 +53,8 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
             $brandModel->setData($brandData)
                 ->setId($this->getRequest()->getParam('id'))
                 ->saveImage('image', Mage::getBaseDir('media') . DS . 'Brand')
-                ->saveImage('banner', Mage::getBaseDir('media') . DS . 'Brand' . DS . 'Banner');
+                ->saveImage('banner', Mage::getBaseDir('media') . DS . 'Brand' . DS . 'Banner')
+                ->addData(array('url_key' => str_replace(' ', '-', $brandModel->name)));
 
 
             if ($brandModel->brand_id == NULL) {

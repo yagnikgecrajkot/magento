@@ -28,7 +28,7 @@ class Yagnik_Brand_Model_Brand extends Mage_Core_Model_Abstract
         $brand = Mage::getModel('brand/brand')->load($brandId);
 
         $urlKey = $this->url_key;
-        $rewriteUrl = 'brand/' . $urlKey;
+        $rewriteUrl = $urlKey;
 
         $rewrite = Mage::getModel('core/url_rewrite')->getCollection()
             ->addFieldToFilter('request_path', $rewriteUrl)

@@ -1,1 +1,57 @@
-1233
+<style type="text/css">
+.container{
+  display: flex;
+}
+
+.card {
+  width: 250px;
+  height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+/*  max-width: 300px;*/
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.content{
+  margin-top: 20px;
+}
+
+img{
+  height: 50%;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card a {
+  border: 1px solid #00c5ff;
+  border-radius: 10px;  
+  outline: 0;
+  margin: 10px;
+  padding: 5px;
+  color: white;
+  background-color: #00c5ff;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card a:hover {
+  opacity: 0.7;
+}
+</style>
+<div class="container">
+  <?php foreach ($this->getCollection() as $data): ?>
+    <div class="homepage-banner card">
+        <img src="<?php echo $this->getBaseUrl().'media'.DS.'brand'.DS.$data->image; ?>" alt="Denim Jeans" style="width:100%">
+      <div class="content">
+        <h1><?php echo $data->name; ?></h1>
+        <p><a href="<?php echo $this->getBaseUrl().'brand'.DS.$data->name; ?>">Explore Brand</a></p>
+      </div>
+    </div>
+  <?php endforeach ?>
+</div>
