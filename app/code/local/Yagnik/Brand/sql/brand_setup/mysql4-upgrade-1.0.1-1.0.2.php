@@ -1,36 +1,24 @@
 <?php
-
 $installer = $this;
 
 $installer->startSetup();
 
-$installer->run("
-    
-    DROP TABLE IF EXISTS {$this->getTable('salesman_price')};
-    CREATE TABLE {$this->getTable('salesman_price')} (
-      `price_id` int(10) NOT NULL,
-      `salesman_id` int(10) NOT NULL,
-      `product_id` int(10) NOT NULL,
-      `salesman_price` int(11) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+$installer->getConnection()
+->addColumn($installer->getTable('brand'),'url_key', array(
+    'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
+    'nullable'  => false,
+    'length'    => 255,
+    'after'     => 'brand_id', 
+    'comment'   => 'URL Key'
+));
 
-    ALTER TABLE {$this->getTable('salesman_price')}
-        ADD PRIMARY KEY (`price_id`);
-
-    ALTER TABLE {$this->getTable('salesman_price')}
-        MODIFY `price_id` int(10) NOT NULL AUTO_INCREMENT;
-
-    ALTER TABLE {$this->getTable('salesman_price')} 
-        ADD  FOREIGN KEY (`salesman_id`) 
-        REFERENCES {$this->getTable('salesman')}(`salesman_id`)
-        ON DELETE CASCADE ON UPDATE CASCADE;
-
-    ALTER TABLE {$this->getTable('salesman_price')} 
-        ADD  FOREIGN KEY (`product_id`) 
-        REFERENCES {$this->getTable('product')}(`product_id`) 
-        ON DELETE CASCADE ON UPDATE CASCADE;
-");
+$installer->getConnection()
+->addColumn($installer->getTable('brand'),'banner', array(
+    'type'      => Varien_Db_Ddl_Table::TYPE_TEXT,
+    'nullable'  => false,
+    'length'    => 255,
+    'after'     => 'image', 
+    'comment'   => 'Banner'
+));
 
 $installer->endSetup();
-
-?>
