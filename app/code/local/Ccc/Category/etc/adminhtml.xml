@@ -10,7 +10,7 @@
                     <action>category/adminhtml_category/index</action>
                     <sort_order>10</sort_order>
                 </managecategory>
-            </children>
+                </children>
         </category>
        </menu>
        <acl>

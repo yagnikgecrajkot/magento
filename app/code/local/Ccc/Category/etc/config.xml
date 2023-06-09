@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <config>
     <modules>
         <Ccc_Category>    
@@ -5,10 +6,19 @@
         </Ccc_Category>
     </modules>
     <frontend>
+        <routers>
+          <category>
+                <use>standard</use>
+                <args>
+                    <module>Ccc_Category</module>
+                    <frontName>category</frontName>
+                </args>
+            </category>
+        </routers>
         <layout>
             <updates>
                 <category module="Ccc_Category">
-                    <file>category.xml</file>
+                    <file>Ccc_Category.xml</file>
                 </category>
             </updates>
         </layout>
@@ -29,35 +39,14 @@
                 </entities>
             </category_resource>
         </models>
-        <resources>
-            <category_setup>
-                <setup>
-                    <module>Ccc_Category</module>
-                    <class>Mage_Core_Model_Resource_Setup</class>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </category_setup>
-            <category_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </category_write>
-            <category_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </category_read>
-        </resources>
         <blocks>
             <category>
-                <class>Ccc_Category_Block</class>
+                <class>Ccc_category_Block</class>
             </category>
         </blocks>
         <helpers>
            <category>
-                  <class>Ccc_Category_Helper</class>
+                  <class>Ccc_category_Helper</class>
             </category>
         </helpers>
     </global>
