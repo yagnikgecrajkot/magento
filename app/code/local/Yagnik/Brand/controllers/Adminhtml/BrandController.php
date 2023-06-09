@@ -2,13 +2,7 @@
 
 class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_Action
 {
-    public function testAction()
-    {
-        $model = Mage::getModel('brand/brand')->getCollection();
-        print_r($model);
-    }
-
-    function indexAction()
+    public function indexAction()
     {
         $this->_title($this->__('Brand'))
              ->_title($this->__('Manage Brands'));
@@ -53,52 +47,43 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost()) {
-            $model = Mage::getModel('brand/brand');
-            $brandId = $this->getRequest()->getParam('brand_id');
-            $model->setData($data['brand'])->setId($brandId);
-            try {
-                if ($model->brand_id == NULL) {
-                    $model->created_at = now();
-                } else {
-                    $model->updated_at = now();
-                }
-                $model->save();
+        try {
+            $brandModel = Mage::getModel('brand/brand');
+            $brandData = $this->getRequest()->getPost('brand');
+            if ($this->getRequest()->getParam('brand_id')) {
+                $brandModel->setData($brandData)
+                    ->setId($this->getRequest()->getParam('brand_id'));
+            }else{
+                $brandModel->setData($brandData)
+                    ->saveImage('image', Mage::getBaseDir('media') . DS . 'Brand')
+                    ->saveImage('banner', Mage::getBaseDir('media') . DS . 'Brand' . DS . 'Banner');
+            }
 
-                $uploader = new Varien_File_Uploader('image');
-                $uploader->setAllowedExtensions(array('jpg', 'jpeg', 'gif', 'png', 'webp'));
-                $uploader->setAllowRenameFiles(false);
-                $uploader->setFilesDispersion(false);
-                
-                $path = Mage::getBaseDir('media') . DS . 'brand' . DS;
-                $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                if ($uploader->save($path, $model->getId().'.'.$extension)) {
-                    $model->image = $model->getId().".".$extension;
-                    $model->save();
-                    Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Image was successfully uploaded'));
-                }
 
-                    
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Brand was successfully saved'));
-                Mage::getSingleton('adminhtml/session')->setFormData(false);
-                 
-                    
-                if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('*/*/edit', array('brand_id' => $model->getId()));
-                    return;
-                }
+            if ($brandModel->brand_id == NULL) {
+                $brandModel->created_at = date("y-m-d H:i:s");
+            } else {
+                $brandModel->updated_at = date("y-m-d H:i:s");
+            }
 
-                $this->_redirect('*/*/');
-                return;
-            } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('brand_id' => $this->getRequest()->getParam('brand_id')));
+            $brandModel->save();
+            Mage::dispatchEvent('brand_save_after', array('brand' => $brandModel));
+
+            Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Brand was successfully saved'));
+            Mage::getSingleton('adminhtml/session')->setFormData(true);
+
+            if ($this->getRequest()->getParam('back')) {
+                $this->_redirect('*/*/edit', array('id' => $brandModel->getId()));
                 return;
             }
-        }
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('brand')->__('Unable to find item to save'));
             $this->_redirect('*/*/');
+            return;
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            Mage::getSingleton('adminhtml/session')->setFormData($data);
+            $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
+            return;
+        }
     }
     
 

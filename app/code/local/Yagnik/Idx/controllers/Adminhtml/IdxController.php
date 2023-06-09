@@ -202,7 +202,7 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
                     $writeAdapter = $resource->getConnection('core_write');
                     $tableName = $resource->getTableName('idx/idx');
 
-                    $query = "UPDATE `{$tableName}` SET `product_id` = {$productId} WHERE `sku` = {$sku}";
+                    $query = "UPDATE `{$tableName}` SET `product_id` = '{$productId}' WHERE `sku` = '{$sku}'";
 
                 }
             }
@@ -241,7 +241,7 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
 
                 $tableName = $resource->getTableName('idx/idx');
 
-                $query = "UPDATE `{$tableName}` SET `product_id` = {$product->entity_id} WHERE `sku` = {$product->sku}";
+                $query = "UPDATE `{$tableName}` SET `product_id` = '{$product->entity_id}' WHERE `sku` = '{$product->sku}'";
 
                 $writeAdapter->query($query);
 

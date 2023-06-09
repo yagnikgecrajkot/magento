@@ -2,10 +2,38 @@
 <config>
     <modules>
         <Yagnik_Brand>    
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </Yagnik_Brand>
     </modules>
+    <frontend>
+        <routers>
+            <brand>
+                <use>standard</use>
+                <args>
+                    <module>Yagnik_Brand</module>
+                    <frontName>brand</frontName>
+                </args>
+            </brand>
+        </routers>
+        <layout>
+            <updates>
+                <brand module="Yagnik_Brand">
+                    <file>brand.xml</file>
+                </brand>
+            </updates>
+        </layout>
+    </frontend>
     <global>
+        <events>
+            <brand_save_after>
+                <observers>
+                    <brand>
+                        <class>Yagnik_Brand_Model_Observer</class>
+                        <method>generateBrandUrlRewrite</method>
+                    </brand>
+                </observers>
+            </brand_save_after>
+        </events>
         <resources>
             <brand_setup>
                 <setup>
