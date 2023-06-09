@@ -1,3 +1,24 @@
+<style type="text/css">
+.col3-layout .col-wrapper .col-main{
+    float: left;
+}
+
+.container{
+  display: flex;
+}
+
+.card {
+  height: 300px;
+}
+
+</style>
+<div class="container">
+  <?php foreach ($this->getCollection() as $data): ?>
+    <img src="<?php echo $this->getBaseUrl().'media'.DS.'brand'.DS.'banner'.DS.$data->banner; ?>" style="width:100%">
+  <?php endforeach ?>
+</div>
+
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -60,26 +81,24 @@
 }
 </style>
 
-<section>
-    <div class="feature">
-        <div>
-            <div class="title">
-                <h2>Featured <a>Brands</a></h2>
-            </div>
+<div class="feature">
+    <div>
+        <div class="title">
+            <h2>Products</h2>
         </div>
-        <div class="item8">
-          <?php foreach ($this->getCollection() as $data): ?>
-            <a href="<?php echo $this->getBaseUrl().'brand'.DS.$data->name; ?>">
-              <div class="item8_div1">
-                  <div class="img">
-                    <img src="<?php echo $this->getBaseUrl().'media'.DS.'brand'.DS.$data->image; ?>">
-                  </div>
-                  <div class="caption">
-                      <h1><?php echo $data->name; ?></h1>
-                  </div>
+    </div>
+    <div class="item8">
+      <?php foreach ($this->getProduct() as $data): ?>
+        <a href="<?php echo $this->getBaseUrl().'brand'.DS.str_replace(' ','-',strtolower($data->name)).'.html'; ?>">
+          <div class="item8_div1">
+              <div class="img">
+                <img src="<?php echo $this->getBaseUrl().'media'.DS.'catalog/product'.$data->getImage(); ?>">
               </div>
-            </a>
-          <?php endforeach ?>
-        </div>
+              <div class="caption">
+                  <h1><?php echo $data->name; ?></h1>
+              </div>
+          </div>
+        </a>
+      <?php endforeach ?>
+    </div>
 </div>
-</section>

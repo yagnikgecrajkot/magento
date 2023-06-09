@@ -2,7 +2,7 @@
 
 class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_Action
 {
-    function indexAction()
+    public function indexAction()
     {
         $this->_title($this->__('Brand'))
              ->_title($this->__('Manage Brands'));
@@ -50,11 +50,14 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
         try {
             $brandModel = Mage::getModel('brand/brand');
             $brandData = $this->getRequest()->getPost('brand');
-            $brandModel->setData($brandData)
-                ->setId($this->getRequest()->getParam('id'))
-                ->saveImage('image', Mage::getBaseDir('media') . DS . 'Brand')
-                ->saveImage('banner', Mage::getBaseDir('media') . DS . 'Brand' . DS . 'Banner')
-                ->addData(array('url_key' => str_replace(' ', '-', $brandModel->name)));
+            if ($this->getRequest()->getParam('brand_id')) {
+                $brandModel->setData($brandData)
+                    ->setId($this->getRequest()->getParam('brand_id'));
+            }else{
+                $brandModel->setData($brandData)
+                    ->saveImage('image', Mage::getBaseDir('media') . DS . 'Brand')
+                    ->saveImage('banner', Mage::getBaseDir('media') . DS . 'Brand' . DS . 'Banner');
+            }
 
 
             if ($brandModel->brand_id == NULL) {
@@ -64,9 +67,7 @@ class Yagnik_Brand_Adminhtml_BrandController extends Mage_Adminhtml_Controller_A
             }
 
             $brandModel->save();
-            if ($brandModel->brand_id) {
-                $brandModel->saveRewriteUrlKey();
-            }
+            Mage::dispatchEvent('brand_save_after', array('brand' => $brandModel));
 
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('brand')->__('Brand was successfully saved'));
             Mage::getSingleton('adminhtml/session')->setFormData(true);

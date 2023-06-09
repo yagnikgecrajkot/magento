@@ -3,7 +3,22 @@
     <cms_index_index>
         <remove name="right"></remove>
         <reference name="content">
-            <block type="brand/banner" name="homepage_banner" template="brand/banner.phtml" />
+            <block type="brand/home" name="homepage_banner" template="brand/banner.phtml" />
         </reference>
     </cms_index_index>
+    <brand_index_view>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+        </reference>
+        <remove name="right"></remove>
+        <remove name="footer"></remove>
+        <reference name="content">
+            <block type="brand/adminhtml_banner" name="brand.product" template="brand/brand/product.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="brand/adminhtml_banner" name="brand.left" template="brand/brand/left.phtml" />
+        </reference>
+    </brand_index_view>
 </layout>

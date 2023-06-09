@@ -12,6 +12,7 @@ $installer->run("
       `name` varchar(100) NOT NULL,
       `image` varchar(255) NOT NULL,
       `description` varchar(255) NOT NULL,
+      `sort_order` int(11) NOT NULL,
       `created_at` datetime NOT NULL,
       `updated_at` datetime NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

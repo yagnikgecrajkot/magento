@@ -10,7 +10,7 @@ class Yagnik_Brand_Model_Brand extends Mage_Core_Model_Abstract
     public function saveImage($img, $path)
     {
         $uploader = new Varien_File_Uploader($img);
-        $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
+        $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png','webp']);
         $uploader->setAllowRenameFiles(true);
         $uploader->setFilesDispersion(false);
 
@@ -28,7 +28,7 @@ class Yagnik_Brand_Model_Brand extends Mage_Core_Model_Abstract
         $brand = Mage::getModel('brand/brand')->load($brandId);
 
         $urlKey = $this->url_key;
-        $rewriteUrl = $urlKey;
+        $rewriteUrl = 'brand/'.$urlKey;
 
         $rewrite = Mage::getModel('core/url_rewrite')->getCollection()
             ->addFieldToFilter('request_path', $rewriteUrl)
