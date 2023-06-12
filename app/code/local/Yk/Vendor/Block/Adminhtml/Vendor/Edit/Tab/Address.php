@@ -12,9 +12,9 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Address extends Mage_Adminhtml_B
         $fieldset = $form->addFieldset('address_form',array('legend'=>Mage::helper('vendor')->__('Vendor Address Information')));
 
         $fieldset->addField('address', 'text', array(
-            'label' => Mage::helper('vendor')->__('Address'),
-            'required' => true,
-            'name' => 'address[address]',
+            'label'      => Mage::helper('vendor')->__('Address'),
+            'required'   => true,
+            'name'       => 'address[address]',
         ));
 
         $fieldset->addField('city', 'text', array(
@@ -23,31 +23,58 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Address extends Mage_Adminhtml_B
             'name' => 'address[city]',
         ));
 
-        $fieldset->addField('state', 'text', array(
-            'label' => Mage::helper('vendor')->__('State'),
-            'required' => true,
-            'name' => 'address[state]',
+        $fieldset->addField('country', 'select', array(
+            'name'      => 'address[country]',
+            'label'     => Mage::helper('vendor')->__('Country'),
+            'required'  => true,
+            'values'    => Mage::getModel('directory/country')->getResourceCollection()
+                            ->loadByStore()
+                            ->toOptionArray(),
+            'onchange'  => 'updateStateOptions(this.value)',
         ));
 
-        $fieldset->addField('country', 'text', array(
-            'label' => Mage::helper('vendor')->__('Country'),
-            'required' => true,
-            'name' => 'address[country]',
+        $fieldset->addField('state', 'select', array(
+            'name'      => 'address[state]',
+            'label'     => Mage::helper('vendor')->__('State'),
+            'required'  => true,
+            'values'    => Mage::getModel('directory/region')->getResourceCollection()
+                            ->addCountryFilter($countryId)
+                            ->load()
+                            ->toOptionArray()
+        ));
+        
+        $script = '
+            <script>
+            function updateStateOptions(countryId) {
+                console.log(countryId);
+                var url = "' . $this->getUrl('*/*/updateStateOptions') . '"; // Replace with your controller action URL
+                new Ajax.Request(url, {
+                    method: "post",
+                    parameters: { country_id: countryId },
+                    onSuccess: function(transport) {
+                        var response = transport.responseText.evalJSON();
+                        var stateField = $("state");
+                        stateField.update("");
+                        response.each(function(option) {
+                            stateField.insert(new Element("option", { value: option.value }).update(option.label));
+                        });
+                    }
+                });
+            }
+            </script>';
+
+            
+        $fieldset->addField('ajax_script', 'note', array(
+            'text'     => $script,
+            'after_element_html' => '',
         ));
 
-        $fieldset->addField('zip_code', 'text', array(
-            'label' => Mage::helper('vendor')->__('Zip Code'),
+        $fieldset->addField('postal_code', 'text', array(
+            'label' => Mage::helper('vendor')->__('Postal Code'),
             'required' => true,
-            'name' => 'address[zip_code]',
+            'name' => 'address[postal_code]',
         ));
 
-        // if ( Mage::getSingleton('adminhtml/session')->getvendorData() )
-        // {
-        //     $form->setValues(Mage::getSingleton('adminhtml/session')->getvendorData());
-        //     Mage::getSingleton('adminhtml/session')->setvendorData(null);
-        // } elseif ( Mage::registry('current_vendor') ) {
-        //     $form->setValues(Mage::registry('current_vendor')->getData());
-        // }
         $form->setValues($modelAddress->getData());
         return parent::_prepareForm();
         }

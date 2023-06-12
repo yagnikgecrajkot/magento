@@ -50,22 +50,23 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
 
     public function saveAction()
     {
-        if ($data = $this->getRequest()->getPost()) {
-            echo'<pre>';
-            $model = Mage::getModel('vendor/vendor');
-            $vendorId = $this->getRequest()->getParam('vendor_id');
-            $model->setData($data['vendor'])->setId($vendorId);
-            try {
+        try {
+            if ($data = $this->getRequest()->getPost()) {
+                $model = Mage::getModel('vendor/vendor');
+                $vendorId = $this->getRequest()->getParam('vendor_id');
+                $model->setData($data['vendor'])->setId($vendorId);
                 if ($model->vendor_id == NULL) {
                     $model->created_at = now();
                 } else {
                     $model->updated_at = now();
                 }
                 if ($model->save()) {
-                    if ( $vendorId) {
+                    if ($vendorId) {
                         $modelAddress = Mage::getModel('vendor/vendor_address')->load($vendorId,'vendor_id');
+                        $modelAddress->updated_at = now();
                     }else{
                         $modelAddress = Mage::getModel('vendor/vendor_address');
+                        $modelAddress->created_at = now();
                     }
                     
                     $modelAddress->vendor_id = $model->getId();
@@ -74,26 +75,49 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
                     
                     Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('vendor')->__('Vendor was successfully saved'));
                     Mage::getSingleton('adminhtml/session')->setFormData(false);
-                     
-                    
                 }
-                if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('*/*/edit', array('vendor_id' => $model->getId()));
-                    return;
-                }
+            }
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            Mage::getSingleton('adminhtml/session')->setFormData($data);
+            $this->_redirect('*/*/edit', array('vendor_id' => $this->getRequest()->getParam('vendor_id')));
+            return;
+        }
+        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('vendor')->__('Unable to find item to save'));
+        $this->_redirect('*/*/');
+    }
 
-                $this->_redirect('*/*/');
-                return;
+    public function saveAndContinueEditAction()
+    {
+        
+    }
+
+    public function massStatusAction()
+    {
+        $vendorsId = $this->getRequest()->getPost('vendor_id');
+        if(!is_array($vendorsId)) {
+             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('adminhtml')->__('Please select vendor(s).'));
+        } else {
+            try {
+                $vendor = Mage::getModel('vendor/vendor');
+                foreach ($vendorsId as $vendorId) {
+                    $vendor
+                        ->load($vendorId)
+                        ->setStatus($this->getRequest()->getPost('status'))
+                        ->save();
+                }
+                // print_r($vendor);die;
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('adminhtml')->__('Total of %d record(s) were Status Updated.', count($vendorsId))
+                );
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                Mage::getSingleton('adminhtml/session')->setFormData($data);
-                $this->_redirect('*/*/edit', array('vendor_id' => $this->getRequest()->getParam('vendor_id')));
-                return;
             }
         }
-            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('vendor')->__('Unable to find item to save'));
-            $this->_redirect('*/*/');
+        $this->_redirect('*/*/index');
+
     }
+
     
 
     public function deleteAction() 
@@ -137,6 +161,32 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
         }
          
         $this->_redirect('*/*/index');
+    }
+
+    public function updateStateOptionsAction()
+    {
+
+        $countryId = $this->getRequest()->getParam('country_id');
+        Mage::log($countryId,null,'country.log');
+        $options = array();
+
+        // print_r($countryId);die;
+        // Retrieve the state options for the selected country
+        $states = Mage::getModel('directory/region')->getResourceCollection()
+            ->addCountryFilter($countryId)
+            ->load();
+        
+        // Build the options array
+        foreach ($states as $state) {
+            $options[] = array(
+                'value' => $state->getId(),
+                'label' => $state->getName()
+            );
+        }
+        
+        // Return the options as JSON response
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($options));
     }
 
 

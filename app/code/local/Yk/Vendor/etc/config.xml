@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Yk_Vendor>    
-            <version>1.0.1</version>
+            <version>0.2.0</version>
         </Yk_Vendor>
     </modules>
     <frontend>

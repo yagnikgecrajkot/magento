@@ -58,6 +58,7 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
             'header'    => Mage::helper('vendor')->__('Status'),
             'align'     => 'left',
             'index'     => 'status',
+            'renderer'  => 'Yk_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Grid_Renderer_Vendor'
         ));
 
         $this->addColumn('created_at', array(
@@ -85,6 +86,24 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget_
         'url'  => $this->getUrl('*/*/massDelete', array('' => '')),
         'confirm' => Mage::helper('vendor')->__('Are you sure?')
         ));
+        
+        $statuses = [1=>'Active',2=>'Inactive'];
+
+        $this->getMassactionBlock()->addItem('status', array(
+             'label'    => Mage::helper('vendor')->__('Status'),
+             'url'      => $this->getUrl('*/*/massStatus'),
+             // 'confirm'  => Mage::helper('vendor')->__('Are you sure?'),
+             'additional' => array(
+                    'visibility' => array(
+                         'name' => 'status',
+                         'type' => 'select',
+                         'class' => 'required-entry',
+                         'label' => Mage::helper('catalog')->__('Status'),
+                         'values' => $statuses
+                     )
+             )
+        ));
+
          
         return $this;
     }
