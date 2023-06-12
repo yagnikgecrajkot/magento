@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Ccc_Category>    
-            <version>1.0.0</version>
+            <version>0.2.0</version>
         </Ccc_Category>
     </modules>
     <frontend>
@@ -18,7 +18,7 @@
         <layout>
             <updates>
                 <category module="Ccc_Category">
-                    <file>Ccc_Category.xml</file>
+                    <file>category.xml</file>
                 </category>
             </updates>
         </layout>
@@ -63,6 +63,11 @@
             <category>
                 <class>Ccc_category_Block</class>
             </category>
+            <adminhtml>
+                <rewrite>
+                    <catalog_category_tree>Ccc_Category_Block_Adminhtml_Catalog_Category_Tree</catalog_category_tree>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
            <category>
@@ -80,5 +85,12 @@
                 </args>
             </category>
         </routers>
+         <layout>
+            <updates>
+                <category>
+                    <file>category.xml</file>
+                </category>
+            </updates>
+        </layout>
     </admin>
 </config>

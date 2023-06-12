@@ -31,17 +31,10 @@ class Ccc_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget
             'index'     => 'vendor_id',
         ));
 
-        $this->addColumn('first_name', array(
-            'header'    => Mage::helper('vendor')->__('First Name'),
+        $this->addColumn('name', array(
+            'header'    => Mage::helper('vendor')->__('Name'),
             'align'     => 'left',
-            'index'     => 'first_name',
-        ));
-
-
-        $this->addColumn('last_name', array(
-            'header'    => Mage::helper('vendor')->__('Last Name'),
-            'align'     => 'left',
-            'index'     => 'last_name',
+            'index'     => 'name',
         ));
 
         $this->addColumn('email', array(
@@ -50,10 +43,10 @@ class Ccc_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget
             'index'     => 'email'
         ));
 
-         $this->addColumn('gender', array(
-            'header'    => Mage::helper('vendor')->__('Gender'),
+         $this->addColumn('password', array(
+            'header'    => Mage::helper('vendor')->__('Password'),
             'align'     => 'left',
-            'index'     => 'gender',
+            'index'     => 'password',
         ));
 
         $this->addColumn('mobile', array(
@@ -62,19 +55,13 @@ class Ccc_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget
             'index'     => 'mobile'
         ));
 
-         $this->addColumn('status', array(
+        $this->addColumn('status', array(
             'header'    => Mage::helper('vendor')->__('Status'),
             'align'     => 'left',
             'index'     => 'status',
         ));
 
-        $this->addColumn('company', array(
-            'header'    => Mage::helper('vendor')->__('Company'),
-            'align'     => 'left',
-            'index'     => 'company'
-        ));
-
-         $this->addColumn('created_at', array(
+        $this->addColumn('created_at', array(
             'header'    => Mage::helper('vendor')->__('Created At'),
             'align'     => 'left',
             'index'     => 'created_at',
@@ -86,26 +73,6 @@ class Ccc_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget
             'index'     => 'updated_at'
         ));
 
-       $this->addColumn('action',
-            array(
-                'header'    => Mage::helper('vendor')->__('Action'),
-                'width'     => '50px',
-                'type'      => 'action',
-                'getter'     => 'getId',
-                'actions'   => array(
-                    array(
-                        'caption' => Mage::helper('vendor')->__('Edit'),
-                        'url'     => array(
-                            'base'=>'*/*/edit',
-                            'params'=>array('store'=>$this->getRequest()->getParam('vendor_id'))
-                        ),
-                        'field'   => 'vendor_id'
-                    )
-                ),
-                'filter'    => false,
-                'sortable'  => false,
-                'index'     => 'stores',
-        ));
         return parent::_prepareColumns();
     }
 
@@ -123,27 +90,6 @@ class Ccc_Vendor_Block_Adminhtml_Vendor_Grid extends Mage_Adminhtml_Block_Widget
         return $this;
     }
 
-
-    // protected function _afterLoadCollection()
-    // {
-    //     $this->getCollection()->walk('afterLoad');
-    //     parent::_afterLoadCollection();
-    // }
-
-    // protected function _filterStoreCondition($collection, $column)
-    // {
-    //     if (!$value = $column->getFilter()->getValue()) {
-    //         return;
-    //     }
-
-    //     $this->getCollection()->addStoreFilter($value);
-    // }
-
-    /**
-     * Row click url
-     *
-     * @return string
-     */
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('vendor_id' => $row->getId()));
