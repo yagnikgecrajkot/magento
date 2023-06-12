@@ -14,7 +14,7 @@ $installer->run("
       `city` varchar(255) NOT NULL,
       `state` varchar(255) NOT NULL,
       `country` varchar(255) NOT NULL,
-      `zip_code` int(11) NOT NULL
+      `postal_code` int(11) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
     ALTER TABLE {$this->getTable('vendor_address')}

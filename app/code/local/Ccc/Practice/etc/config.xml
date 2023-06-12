@@ -59,11 +59,6 @@
             <practice>
                 <class>Ccc_Practice_Block</class>
             </practice>
-            <adminhtml>
-                <rewrite>
-                    <catalog_product_grid>Ccc_Practice_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>
-                </rewrite>
-            </adminhtml>
         </blocks>
         <helpers>
             <practice>
@@ -78,8 +73,8 @@
         <routers>
             <adminhtml>
                 <use>admin</use>
-                <args>
-                    <!-- <modules>
+                <args><!-- 
+                    <modules>
                         <ccc_practice before="Mage_Adminhtml_Catalog">Ccc_Practice_Adminhtml</ccc_practice>
                     </modules> -->
                     <frontName>vendor</frontName>
