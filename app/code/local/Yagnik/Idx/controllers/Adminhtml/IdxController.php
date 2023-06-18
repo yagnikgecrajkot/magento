@@ -21,7 +21,6 @@ class Yagnik_Idx_Adminhtml_IdxController extends Mage_Adminhtml_Controller_Actio
         $this->_addContent($this->getLayout()->createBlock('idx/adminhtml_idx_edit'))
                 ->_addLeft($this->getLayout()
                 ->createBlock('idx/adminhtml_idx_edit_tabs'));
-
         $this->renderLayout();
     }
 

@@ -7,6 +7,7 @@ class Yagnik_Eavmgmt_Adminhtml_EavmgmtController extends Mage_Adminhtml_Controll
         $this->_title($this->__('Eavmgmt'))
              ->_title($this->__('Manage Eavmgmts'));
         $this->loadLayout();
+        $this->_setActiveMenu('eavmgmt/manage');
         $this->_addContent($this->getLayout()->createBlock('eavmgmt/adminhtml_eavmgmt'));
         $this->renderLayout();
     }

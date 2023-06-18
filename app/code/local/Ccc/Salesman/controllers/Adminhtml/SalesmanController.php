@@ -8,6 +8,7 @@ class Ccc_Salesman_Adminhtml_SalesmanController extends Mage_Adminhtml_Controlle
         $this->_title($this->__('Salesman'))
              ->_title($this->__('Manage Salesman'));
         $this->loadLayout();
+        $this->_setActiveMenu('salesman/manage');
         $this->_addContent($this->getLayout()->createBlock('salesman/adminhtml_salesman'));
         $this->renderLayout();
     }

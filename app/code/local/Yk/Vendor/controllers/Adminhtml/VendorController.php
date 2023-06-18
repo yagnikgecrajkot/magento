@@ -52,8 +52,15 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
     {
         try {
             if ($data = $this->getRequest()->getPost()) {
+
                 $model = Mage::getModel('vendor/vendor');
                 $vendorId = $this->getRequest()->getParam('vendor_id');
+                if ($data['vendor']['password'] == 'auto') {
+                    $newName = substr($data['vendor']['name'],0,4);
+                    $newstring = substr($data['vendor']['mobile'], 6);
+                    $autoPassword = $newName.$newstring;
+                    $data['vendor']['password'] = $autoPassword;
+                }
                 $model->setData($data['vendor'])->setId($vendorId);
                 if ($model->vendor_id == NULL) {
                     $model->created_at = now();
@@ -73,8 +80,6 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
                     $modelAddress->setData(array_merge($modelAddress->getData(),$data['address']));
                     $modelAddress->save();
                     
-                    Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('vendor')->__('Vendor was successfully saved'));
-                    Mage::getSingleton('adminhtml/session')->setFormData(false);
                 }
             }
         } catch (Exception $e) {
@@ -83,7 +88,7 @@ class Yk_Vendor_Adminhtml_VendorController extends Mage_Adminhtml_Controller_Act
             $this->_redirect('*/*/edit', array('vendor_id' => $this->getRequest()->getParam('vendor_id')));
             return;
         }
-        Mage::getSingleton('adminhtml/session')->addError(Mage::helper('vendor')->__('Unable to find item to save'));
+        Mage::getSingleton('adminhtml/session')->addSuccess('Vendor was successfully saved');
         $this->_redirect('*/*/');
     }
 

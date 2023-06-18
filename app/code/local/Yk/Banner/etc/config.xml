@@ -110,7 +110,7 @@
         <menu>
             <banner translate="title" module="banner">
                 <title>Banners</title>
-                <sort_order>170</sort_order>
+                <sort_order>16</sort_order>
                 <children>
                     <managebanner translate="title" module="banner">
                         <title>Manage Banners</title>
