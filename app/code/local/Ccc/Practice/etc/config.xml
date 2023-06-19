@@ -1,74 +1,36 @@
-<?xml version="1.0"?>
 <config>
     <modules>
         <Ccc_Practice>    
             <version>1.0.0</version>
         </Ccc_Practice>
     </modules>
-    <frontend>
-        <routers>
-          <practice>
-                <use>standard</use>
-                <args>
-                    <module>Ccc_Practice</module>
-                    <frontName>practice</frontName>
-                </args>
-            </practice>
-        </routers>
-        <layout>
-            <updates>
-                <practice module="Ccc_Practice">
-                    <file>Ccc_Practice.xml</file>
-                </practice>
-            </updates>
-        </layout>
-    </frontend>
     <global>
         <models>
             <practice>
                 <class>Ccc_Practice_Model</class>
                 <resourceModel>practice_resource</resourceModel>
             </practice>
-            <catalog>
-                <rewrite>
-                    <product>Ccc_Practice_Model_Product</product>
-                </rewrite>
-            </catalog>
             <practice_resource>
                 <class>Ccc_Practice_Model_Resource</class>
                 <deprecatedNode>practice_mysql4</deprecatedNode>
                 <entities>
-                    <practice>
-                        <table>practice</table>
-                    </practice>
+                    <product>
+                        <table>product</table>
+                    </product>
                 </entities>
             </practice_resource>
         </models>
-        <events>
-           <cms_page_prepare_save>
-            <observers>
-               <Ccc_Practice_Model_Observer>
-                   <type>singleton</type>
-                   <class>Ccc_Practice_Model_Observer</class>
-                   <method>saveCmsPageObserve</method>
-                </Ccc_Practice_Model_Observer>
-               </observers>
-          </cms_page_prepare_save>
-        </events>
         <blocks>
             <practice>
                 <class>Ccc_Practice_Block</class>
             </practice>
         </blocks>
-        <helpers>
-            <practice>
-                <class>Ccc_Practice_Helper</class>
-                <rewrite>
-                    <data>Ccc_Practice_Helper_NewData</data>
-                </rewrite>
+        <helpers> 
+           <practice>
+                  <class>Ccc_Practice_Helper</class>
             </practice>
         </helpers>
-    </global>
+    </global> 
     <admin>
         <routers>
             <practice>
@@ -84,7 +46,7 @@
                         <ccc_practice before="Mage_Adminhtml_Catalog">Ccc_Practice_Adminhtml</ccc_practice>
                     </modules>
                 </args>
-            </adminhtml>
+            </practice>
         </routers>
     </admin>
 </config>

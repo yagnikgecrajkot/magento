@@ -1,5 +1,4 @@
 <?php
-11
 class Ccc_Practice_Adminhtml_CategoryController extends Mage_Adminhtml_Controller_Action
 {
     public function indexAction()

@@ -1,20 +1,23 @@
 <?php
-class Ccc_Practice_Block_Adminhtml_Eight_Grid extends Mage_Adminhtml_Block_Widget_Grid
+
+class Ccc_Practice_Block_Adminhtml_One_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
-
     public function __construct()
     {
         parent::__construct();
-        $this->setId('PracticeAdminhtmlPracticeGrid');
-        $this->setDefaultSort('category_id');
+        $this->setId('practiceAdminhtmlPracticeGrid');
+        $this->setDefaultSort('name');
         $this->setDefaultDir('ASC');
     }
 
-    protected function _prepareCollection()
+   protected function _prepareCollection()
     {
-        $collection = Mage::getModel('category/category')->getCollection();
-        /* @var $collection Mage_Cms_Model_Mysql4_Page_Collection */
+        $collection = Mage::getModel('catalog/product')->getCollection()
+                        ->addAttributeToSelect('name')
+                        ->addAttributeToSelect('sku')
+                        ->addAttributeToSelect('cost')
+                        ->addAttributeToSelect('price')
+                        ->addAttributeToSelect('color');
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -22,28 +25,37 @@ class Ccc_Practice_Block_Adminhtml_Eight_Grid extends Mage_Adminhtml_Block_Widge
 
     protected function _prepareColumns()
     {
-        $baseUrl = $this->getUrl();
 
         $this->addColumn('name', array(
-            'header'    => Mage::helper('category')->__('Name'),
+            'header'    => Mage::helper('product')->__('Name'),
             'align'     => 'left',
-            'index'     => 'name',
+            'index'     => 'name'
         ));
 
-        $this->addColumn('status', array(
-            'header'    => Mage::helper('category')->__('Status'),
+        $this->addColumn('sku', array(
+            'header'    => Mage::helper('product')->__('SKU'),
             'align'     => 'left',
-            'index'     => 'status',
-            'renderer' => 'Ccc_Category_Block_Adminhtml_Category_Grid_Renderer_Status'
+            'index'     => 'sku'
+        ));
+
+        $this->addColumn('cost', array(
+            'header'    => Mage::helper('product')->__('Cost'),
+            'align'     => 'left',
+            'index'     => 'cost'
+        ));
+
+        $this->addColumn('price', array(
+            'header'    => Mage::helper('product')->__('Price'),
+            'align'     => 'left',
+            'index'     => 'price'
+        ));
+
+        $this->addColumn('color', array(
+            'header'    => Mage::helper('product')->__('Color'),
+            'align'     => 'left',
+            'index'     => 'color'
         ));
 
         return parent::_prepareColumns();
     }
-
-    
-    public function getRowUrl($row)
-    {
-        return $this->getUrl('*/*/edit', array('category_id' => $row->getId()));
-    }
-   
 }

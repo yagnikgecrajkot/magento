@@ -1,17 +1,7 @@
 <?php
-/**
- * 
- */
 
 class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_Action
 {
-    function indexAction()
-    {
-        $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('practice/practice'));
-        $this->renderLayout();
-    }
-
     public function oneaAction()
     {
         $this->loadLayout();
@@ -91,25 +81,130 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_A
 
     public function viewoneAction()
     {
-        echo "one";
-        
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+
+        $tableName = $resource->getTableName('catalog/product');
+        $select = $readConnection->select()
+            ->from(array('p' => $tableName), array(
+                'sku' => 'p.sku',
+                'name' => 'pv.value',
+                'cost' => 'pdc.value',
+                'price' => 'pdp.value',
+                'color' => 'pi.value',
+            ))
+            ->joinLeft(
+                array('pv' => $resource->getTableName('catalog_product_entity_varchar')),
+                'pv.entity_id = p.entity_id AND pv.attribute_id = 73',
+                array()
+            )
+            ->joinLeft(
+                array('pdc' => $resource->getTableName('catalog_product_entity_decimal')),
+                'pdc.entity_id = p.entity_id AND pdc.attribute_id = 81',
+                array()
+            )
+            ->joinLeft(
+                array('pdp' => $resource->getTableName('catalog_product_entity_decimal')),
+                'pdp.entity_id = p.entity_id AND pdp.attribute_id = 77',
+                array()
+            )
+            ->joinLeft(
+                array('pi' => $resource->getTableName('catalog_product_entity_int')),
+                'pi.entity_id = p.entity_id AND pi.attribute_id = 94',
+                array()
+            );
+
+        echo $select;
     }
 
     public function viewtwoAction()
     {
-        echo "two";
+        $attributeOptions = [];
+
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+
+        $attributeOptionTable = $resource->getTableName('eav_attribute_option');
+        $attributeTable = $resource->getTableName('eav_attribute');
+
+        $select = $readConnection->select()
+            ->from(
+                array('ao' => $attributeOptionTable),
+                array(
+                    'attribute_id' => 'ao.attribute_id',
+                    'option_id' => 'ao.option_id',
+                    'option_name' => 'ov.value',
+                )
+            )
+            ->joinLeft(
+                array('ov' => $resource->getTableName('eav_attribute_option_value')),
+                'ov.option_id = ao.option_id',
+                array()
+            )
+            ->join(
+                array('a' => $attributeTable),
+                'a.attribute_id = ao.attribute_id',
+                array('attribute_code' => 'a.attribute_code')
+            );
+
+        $queryResult = $readConnection->fetchAll($select);
+        echo $select;die;
         
     }
 
     public function viewthreeAction()
     {
-        echo "three";
-        
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+
+        $attributeOptionTable = $resource->getTableName('eav_attribute_option');
+        $attributeTable = $resource->getTableName('eav_attribute');
+
+        $select = $readConnection->select()
+            ->from(
+                array('main_table' => $attributeTable),
+                array(
+                    'attribute_id' => 'main_table.attribute_id',
+                    'attribute_code' => 'main_table.attribute_code',
+                )
+            )
+            ->joinLeft(
+                array('option_count_table' => $attributeOptionTable),
+                'option_count_table.attribute_id = main_table.attribute_id',
+                array(
+                    'option_count' => 'COUNT(option_count_table.option_id)',
+                )
+            )
+            ->group('main_table.attribute_id')
+            ->having('COUNT(option_count_table.option_id) > 10', 1);
+
+        echo $select;die;
     }
 
     public function viewfourAction()
     {
-        echo "four";
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        echo $select = $readConnection->select()
+            ->from(
+                array('main_table'=> $resource->getTableName('catalog_product_entity')),
+                array('entity_id','sku')
+            )
+            ->joinLeft(
+                array('image'=>$resource->getTableName('catalog_product_entity_varchar')),
+                'image.entity_id = main_table.entity_id AND image.attribute_id = 87',
+                array('image' => 'image.value')
+            )
+            ->joinLeft(
+                array('thumb'=>$resource->getTableName('catalog_product_entity_varchar')),
+                'thumb.entity_id = main_table.entity_id AND thumb.attribute_id = 89',
+                array('thumbnail' => 'thumb.value')
+            )
+            ->joinLeft(
+                array('small'=>$resource->getTableName('catalog_product_entity_varchar')),
+                'small.entity_id = main_table.entity_id AND small.attribute_id = 88',
+                array('small' => 'small.value')
+            );
         
     }
 
