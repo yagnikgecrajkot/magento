@@ -11,32 +11,16 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Vendor extends Mage_Adminhtml_Bl
 
         $fieldset = $form->addFieldset('vendor_form', array('legend'=>Mage::helper('vendor')->__('Vendor information')));
 
-        $fieldset->addField('first_name', 'text', array(
-            'label' => Mage::helper('vendor')->__('First Name'),
+        $fieldset->addField('name', 'text', array(
+            'label' => Mage::helper('vendor')->__('Name'),
             'required' => true,
-            'name' => 'vendor[first_name]',
-        ));
-
-        $fieldset->addField('last_name', 'text', array(
-            'label' => Mage::helper('vendor')->__('Last Name'),
-            'required' => true,
-            'name' => 'vendor[last_name]',
+            'name' => 'vendor[name]',
         ));
 
         $fieldset->addField('email', 'text', array(
             'label' => Mage::helper('vendor')->__('Email'),
             'required' => true,
             'name' => 'vendor[email]',
-        ));
-
-        $fieldset->addField('gender', 'select', array(
-            'label' => Mage::helper('vendor')->__('Gender'),
-            'required' => true,
-            'name' => 'vendor[gender]',
-            'options'=> array(
-                '1'=>Mage::helper('vendor')->__('Male'),
-                '2'=>Mage::helper('vendor')->__('Female'),
-            ),
         ));
 
         $fieldset->addField('mobile', 'text', array(
@@ -55,21 +39,25 @@ class Yk_Vendor_Block_Adminhtml_Vendor_Edit_Tab_Vendor extends Mage_Adminhtml_Bl
             ),
         ));
 
-        $fieldset->addField('company', 'text', array(
-            'label' => Mage::helper('vendor')->__('Company'),
-            'required' => true,
-            'name' => 'vendor[company]',
-        ));
 
-       
+        $newFieldset = $form->addFieldset(
+            'password_fieldset',
+            array('legend'=>Mage::helper('customer')->__('Password Management'))
+        );
+
+        $field = $newFieldset->addField('password', 'text',
+            array(
+                'label' => Mage::helper('customer')->__('Password'),
+                'class' => 'input-text required-entry validate-password min-pass-length-' . 6,
+                'name'  => 'vendor[password]',
+                'required' => true,
+                'note' => Mage::helper('adminhtml')
+                    ->__('Password must be at least of %d characters.', 6),
+            )
+        );
         
-        // if ( Mage::getSingleton('adminhtml/session')->getvendorData() )
-        // {
-        //     $form->setValues(Mage::getSingleton('adminhtml/session')->getvendorData());
-        //     Mage::getSingleton('adminhtml/session')->setvendorData(null);
-        // } elseif ( Mage::registry('current_vendor') ) {
-        //     $form->setValues(Mage::registry('current_vendor')->getData());
-        // }
+        $field->setRenderer($this->getLayout()->createBlock('adminhtml/customer_edit_renderer_newpass'));
+
         $form->setValues($model->getData());
         return parent::_prepareForm();
         }

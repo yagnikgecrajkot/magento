@@ -1,9 +1,9 @@
 <?php
 
-class Ccc_Practice_Model_Product extends Mage_Catalog_Model_Product
+class Ccc_Product_Model_Product extends Mage_Core_Model_Abstract
 {
-    public function getPrice()
+    function __construct()
     {
-        parent::getPrice();
+        $this->_init('product/product');
     }
 }

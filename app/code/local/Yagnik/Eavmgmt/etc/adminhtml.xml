@@ -2,7 +2,7 @@
 	<menu>
 		<eavmgmt module="eavmgmt">
             <title>Eavmgmt</title>
-            <sort_order>10</sort_order>
+            <sort_order>19</sort_order>
             <children>
                 <manageeavmgmt module="eavmgmt">
                     <title>Manage Eavmgmts</title>

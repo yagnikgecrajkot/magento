@@ -71,13 +71,18 @@
     </global>
     <admin>
         <routers>
-            <adminhtml>
+            <practice>
                 <use>admin</use>
-                <args><!-- 
+                <args>
+                    <module>Ccc_Practice</module>
+                    <frontName>practice</frontName>
+                </args>
+            </practice>
+            <adminhtml>
+                <args>
                     <modules>
                         <ccc_practice before="Mage_Adminhtml_Catalog">Ccc_Practice_Adminhtml</ccc_practice>
-                    </modules> -->
-                    <frontName>vendor</frontName>
+                    </modules>
                 </args>
             </adminhtml>
         </routers>

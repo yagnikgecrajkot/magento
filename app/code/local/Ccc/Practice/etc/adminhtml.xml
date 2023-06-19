@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <practice translate="title" module="practice">
+            <title>Practice</title>
+            <sort_order>10</sort_order>
+            <!-- action>adminhtml/customer/</action -->
+            <children>
+                <practicegrid translate="title" module="practice">
+                    <title>Manage practice</title>
+                    <action>practice/adminhtml_query/index</action>
+                    <sort_order>0</sort_order>
+                </practicegrid>
+                <practicegrid1 translate="title" module="practice">
+                    <title>Manage practice</title>
+                    <action>practice/adminhtml_query/one</action>
+                    <sort_order>0</sort_order>
+                </practicegrid1>
+                <practicegrid12 translate="title" module="practice">
+                    <title>Manage practice</title>
+                    <action>practice/adminhtml_query/two</action>
+                    <sort_order>0</sort_order>
+                </practicegrid12>
+            </children>
+         </practice>
+    </menu>
+</config>

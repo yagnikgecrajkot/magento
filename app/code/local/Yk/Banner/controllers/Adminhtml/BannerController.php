@@ -6,6 +6,7 @@ class Yk_Banner_Adminhtml_BannerController extends Mage_Adminhtml_Controller_Act
         $this->_title($this->__('Banner'))
              ->_title($this->__('Manage Banners'));
         $this->loadLayout();
+        $this->_setActiveMenu('banner/manage');
         $this->_addContent($this->getLayout()->createBlock('banner/adminhtml_banner'));
         $this->renderLayout();
     }

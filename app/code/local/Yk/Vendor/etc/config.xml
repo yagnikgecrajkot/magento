@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Yk_Vendor>    
-            <version>1.0.1</version>
+            <version>0.2.0</version>
         </Yk_Vendor>
     </modules>
     <frontend>
@@ -15,6 +15,22 @@
                 </args>
             </Vendor>
         </routers>
+        <layout>
+            <updates>
+                <vendor module="Yk_Vendor">
+                    <file>vendor.xml</file>
+                </vendor>
+            </updates>
+        </layout>
+            <template>
+                <email>
+                    <vendor_login_email_template translate="label" module="vendor">
+                        <label>Vendor Login Email</label>
+                        <file>vendor_login.html</file>
+                        <type>html</type>
+                    </vendor_login_email_template>
+                </email>
+            </template>
     </frontend>
     <global>
         <resources>

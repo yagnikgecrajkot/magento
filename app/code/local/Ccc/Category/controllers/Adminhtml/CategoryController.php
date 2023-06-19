@@ -8,6 +8,7 @@ class Ccc_Category_Adminhtml_CategoryController extends Mage_Adminhtml_Controlle
         $this->_title($this->__('Category'))
              ->_title($this->__('Manage Category'));
         $this->loadLayout();
+        $this->_setActiveMenu('category/manage');
         $this->_addContent($this->getLayout()->createBlock('category/adminhtml_category'));
         $this->renderLayout();
     }
@@ -18,6 +19,8 @@ class Ccc_Category_Adminhtml_CategoryController extends Mage_Adminhtml_Controlle
         $model = Mage::getModel('category/category')->load($id);
 
         if ($model->getId() || $id == 0) {
+
+            //check
             $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
             if (!empty($data)) {
                 $model->setData($data);
