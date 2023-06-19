@@ -4,7 +4,7 @@ class Ccc_Practice_Model_Resource_Practice extends Mage_Core_Model_Resource_Db_A
 {
     protected function _construct()
     {
-        $this->_init('vendor/vendor', 'vendor_id');
+        $this->_init('practice/practice', 'practice_id');
     }
 
     
