@@ -1,9 +1,9 @@
 <?php
 
-class Ccc_Practice_Model_Product extends Mage_Core_Model_Abstract
+class Ccc_Product_Model_Product extends Mage_Core_Model_Abstract
 {
     function __construct()
     {
-        $this->_init('practice/product');
+        $this->_init('product/product');
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-class Ccc_Practice_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abstract
+class Ccc_Product_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abstract
 {
     protected function _construct()
     {  
-        $this->_init('practice/product', 'product_id');
+        $this->_init('product/product', 'product_id');
     }  
 }

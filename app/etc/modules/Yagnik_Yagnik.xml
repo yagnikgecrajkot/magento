@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Yagnik_Yagnik>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Yagnik_Yagnik>
+	</modules>
+</config>

@@ -2,10 +2,10 @@
 
 class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_Action
 {
-    public function indexAction()
+    public function oneaAction()
     {
         $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('practice/practice'));
+        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_one'));
         $this->renderLayout();
     }
 
@@ -149,7 +149,7 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_A
 
         $queryResult = $readConnection->fetchAll($select);
         echo $select;die;
-
+        
     }
 
     public function viewthreeAction()

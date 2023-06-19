@@ -1,0 +1,42 @@
+<form action="<?php echo Mage::getUrl('*/*/saveGrid', array('group_id' => $this->getRequest()->getParam('group_id'))); ?>" method="post">
+    <?php echo $this->getBlockHtml('formkey'); ?>
+    <div style="display:flex;">
+        <div style="width: 90%"><h2><b>Manage Banner Grid</b></h2></div>
+        <div style="width: 10% "><button type="submit">Save</button>
+</div>
+    </div>
+    <div>
+        <table style="border: 1px solid black; width:100%;">
+            <tr>
+                <th>Banner Id</th>
+                <th>Group Key</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Position</th>
+                <th>Created At</th>
+            </tr>
+            <?php foreach ($this->getBannerCollection() as $data) : ?>
+            <tr>
+                <td><?php echo $data->banner_id ?></td>
+                <td><?php echo $data->group_id ?></td>
+                <td><img src="<?php echo Mage::getBaseUrl('media') . DS . 'Banner' . DS . 'resized'. DS .$data->image ?>"></td>
+                <td>
+                    <select name="status[<?php echo $data->banner_id ?>]">
+                        <?php $selected = ($data->status == 1) ? "selected" : "" ; ?>
+                        <option value="1" <?php echo $selected ?>>Active</option>
+                        <?php $selected = ($data->status == 2) ? "selected" : "" ; ?>
+                        <option value="2" <?php echo $selected ?>>Inctive</option>
+                    </select>
+                </td>
+                <td><input name="position[<?php echo $data->banner_id ?>]" type="text" value="<?php echo $data->position ?>" style='width: 70px;' ></td>
+                <td><?php echo $data->created_at ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</form>
+<form action="<?php echo Mage::getUrl('*/*/uploadImage', array('group_id' => $this->getRequest()->getParam('group_id'))); ?>" method="post" enctype="multipart/form-data">
+<?php echo $this->getBlockHtml('formkey'); ?>
+    <input type="file" name="images[]" multiple>
+    <button type="submit">Upload</button>
+</form>
