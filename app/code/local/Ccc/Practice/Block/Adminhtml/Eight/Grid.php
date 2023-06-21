@@ -1,6 +1,6 @@
 <?php
 
-class Ccc_Practice_Block_Adminhtml_One_Grid extends Mage_Adminhtml_Block_Widget_Grid
+class Ccc_Practice_Block_Adminhtml_Eight_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     public function __construct()
     {
@@ -10,21 +10,29 @@ class Ccc_Practice_Block_Adminhtml_One_Grid extends Mage_Adminhtml_Block_Widget_
         $this->setDefaultDir('ASC');
     }
 
-   protected function _prepareCollection()
+    protected function _prepareCollection()
     {
-        $collection = Mage::getModel('catalog/product')->getCollection()
-                        ->addAttributeToSelect('name')
-                        ->addAttributeToSelect('sku')
-                        ->addAttributeToSelect('cost')
-                        ->addAttributeToSelect('price')
-                        ->addAttributeToSelect('color');
-        $this->setCollection($collection);
+        $collection = Mage::getModel('catalog/product')->getCollection();
+        $collection->getSelect()
+            ->joinLeft(
+                array('oi' => Mage::getSingleton('core/resource')->getTableName('sales/order_item')),
+                'e.entity_id = oi.product_id',
+                array('sold_quantity' => new Zend_Db_Expr('CAST(COALESCE(SUM(`oi`.`qty_ordered`),0) AS INT)'))
+            )
+            ->group('e.entity_id');
 
+        $this->setCollection($collection);
         return parent::_prepareCollection();
     }
 
     protected function _prepareColumns()
     {
+
+        $this->addColumn('product_id', array(
+            'header'    => Mage::helper('product')->__('Product Id'),
+            'align'     => 'left',
+            'index'     => 'entity_id'
+        ));
 
         $this->addColumn('name', array(
             'header'    => Mage::helper('product')->__('Name'),
@@ -38,23 +46,12 @@ class Ccc_Practice_Block_Adminhtml_One_Grid extends Mage_Adminhtml_Block_Widget_
             'index'     => 'sku'
         ));
 
-        $this->addColumn('cost', array(
-            'header'    => Mage::helper('product')->__('Cost'),
+        $this->addColumn('sold_quantity', array(
+            'header'    => Mage::helper('product')->__('Sold Quantity'),
             'align'     => 'left',
-            'index'     => 'cost'
+            'index'     => 'sold_quantity'
         ));
 
-        $this->addColumn('price', array(
-            'header'    => Mage::helper('product')->__('Price'),
-            'align'     => 'left',
-            'index'     => 'price'
-        ));
-
-        $this->addColumn('color', array(
-            'header'    => Mage::helper('product')->__('Color'),
-            'align'     => 'left',
-            'index'     => 'color'
-        ));
 
         return parent::_prepareColumns();
     }
