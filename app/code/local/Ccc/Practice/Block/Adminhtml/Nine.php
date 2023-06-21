@@ -1,30 +1,27 @@
 <?php
+
 class Ccc_Practice_Block_Adminhtml_Nine extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
-   
     public function __construct()
     {
-        
         $this->_blockGroup = 'practice';
         $this->_controller = 'adminhtml_nine';
-        $this->_headerText = Mage::helper('practice')->__('Query Nine');
-
-        $this->_addButton('back', array(
-            'label'     => $this->__('Back'),
-            'onclick'   => 'setLocation(\'' . $this->getUrl('*/*/index') . '\')',
-            'class'     => 'back',
-        ));
-        
+        $this->_headerText = Mage::helper('practice')->__('Nine Task');
         parent::__construct();
-        $this->_updateButton('add', 'label', $this->__('View Query'));
-
-
+        $this->_removeButton('add');
     }
 
-    public function getCreateUrl()
+    public function _prepareLayout()
     {
-        return $this->getUrl('*/*/viewnine');
+        parent::_prepareLayout();
+
+        $this->addButton('show_query', array(
+            'label'   => Mage::helper('product')->__('Show Query'),
+            'onclick' => "setLocation('{$this->getUrl('practice/adminhtml_query/viewnine')}')",
+            'class'   => 'show_query',
+        ));
+
+        return $this;
     }
 
 }

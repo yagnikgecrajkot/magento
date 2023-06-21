@@ -2,10 +2,10 @@
 
 class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_Action
 {
-    public function oneaAction()
+    public function indexAction()
     {
         $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('practice/adminhtml_one'));
+        $this->_addContent($this->getLayout()->createBlock('practice/practice'));
         $this->renderLayout();
     }
 
@@ -91,7 +91,7 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_A
                 'name' => 'pv.value',
                 'cost' => 'pdc.value',
                 'price' => 'pdp.value',
-                'color' => 'pi.value',
+                'color' => 'ov.value',
             ))
             ->joinLeft(
                 array('pv' => $resource->getTableName('catalog_product_entity_varchar')),
@@ -111,6 +111,11 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_A
             ->joinLeft(
                 array('pi' => $resource->getTableName('catalog_product_entity_int')),
                 'pi.entity_id = p.entity_id AND pi.attribute_id = 94',
+                array()
+            )
+            ->joinLeft(
+                array('ov' => $resource->getTableName('eav_attribute_option_value')),
+                'ov.option_id = pi.value',
                 array()
             );
 
@@ -210,38 +215,171 @@ class Ccc_Practice_Adminhtml_QueryController extends Mage_Adminhtml_Controller_A
 
     public function viewfiveAction()
     {
-        echo "five";
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $select = $readConnection->select()
+            ->from(
+                array('main_table'=> $resource->getTableName('catalog_product_entity')),
+                array('entity_id','sku')
+            )
+            ->joinLeft(
+                array('m'=>$resource->getTableName('catalog/product_attribute_media_gallery')),
+                'm.entity_id = main_table.entity_id',
+                array('image' => 'COUNT(m.value)')
+            )
+            ->group('main_table.entity_id');   
+
+        echo $select;     
         
     }
 
     public function viewsixAction()
     {
-        echo "six";
-        
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $select = $readConnection->select()
+            ->from(
+                array('main_table'=> $resource->getTableName('customer_entity')),
+                array('entity_id','email')
+            )
+            ->joinLeft(
+                array('e'=>$resource->getTableName('customer_entity_varchar')),
+                'e.entity_id = main_table.entity_id AND e.attribute_id = 5',
+                array('firstname' => 'e.value')
+            )
+            ->joinLeft(
+                array('o'=>$resource->getTableName('sales_flat_order')),
+                'o.customer_id = main_table.entity_id',
+                array('count' => 'COUNT(o.customer_id)')
+            )
+            ->group('main_table.entity_id');   
+
+        echo $select;     
     }
 
     public function viewsevenAction()
     {
-        echo "seven";
-        
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $select = $readConnection->select()
+            ->from(
+                array('main_table'=> $resource->getTableName('customer_entity')),
+                array('entity_id','email')
+            )
+            ->joinLeft(
+                array('e'=>$resource->getTableName('customer_entity_varchar')),
+                'e.entity_id = main_table.entity_id AND e.attribute_id = 5',
+                array('firstname' => 'e.value')
+            )
+            ->joinLeft(
+                array('o' => $resource->getTableName('sales/order')),
+                'o.customer_id = e.entity_id',
+                array('order_count' => 'COUNT(o.entity_id)')
+            )
+            ->joinLeft(
+                array('s' => Mage::getSingleton('core/resource')->getTableName('sales_order_status')),
+                'o.status = s.status',
+                array('order_status' => 's.label')
+            )
+            ->group('o.status');
+
+        echo $select;
     }
 
     public function vieweightAction()
     {
-        echo "eight";
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $select = $readConnection->select()
+            ->from(
+                array('main_table'=> $resource->getTableName('catalog_product_entity')),
+                array('entity_id','sku')
+            )
+            ->joinLeft(
+                array('e'=>$resource->getTableName('sales_flat_order_item')),
+                'e.product_id = main_table.entity_id',
+                array('sold_quantity' => 'COALESCE(SUM(e.qty_ordered),0)')
+            )
+            ->group('main_table.entity_id');
+
+        echo $select;
         
     }
 
     public function viewnineAction()
     {
-        echo "nine";
-        
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $tablePrefix = Mage::getConfig()->getTablePrefix();
+
+        echo $select = $connection->select()
+            ->from(array('e' => 'catalog_product_entity'), array('entity_id AS product_id', 'sku'))
+            ->join(
+                array('a' => 'eav_attribute'),
+                'e.entity_type_id = a.entity_type_id',
+                array('attribute_id', 'attribute_code')
+            )
+            ->joinLeft(
+                array('avc' => 'catalog_product_entity_varchar'),
+                'e.entity_id = avc.entity_id AND avc.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avi' => 'catalog_product_entity_int'),
+                'e.entity_id = avi.entity_id AND avi.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avd' => 'catalog_product_entity_decimal'),
+                'e.entity_id = avd.entity_id AND avd.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avt' => 'catalog_product_entity_text'),
+                'e.entity_id = avt.entity_id AND avt.attribute_id = a.attribute_id',
+                array()
+            )
+            ->where('avc.value IS NULL AND avi.value IS NULL AND avd.value IS NULL AND avt.value IS NULL')
+            ->where('a.is_user_defined = ?', 1);
+   
     }
 
-    public function viewtenAction()
+     public function viewtenAction()
     {
-        echo "ten";
-        
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+        $tablePrefix = Mage::getConfig()->getTablePrefix();
+
+        $select = $connection->select()
+            ->from(array('e' => 'catalog_product_entity'), array('entity_id AS product_id', 'sku'))
+            ->join(
+                array('a' => 'eav_attribute'),
+                'e.entity_type_id = a.entity_type_id',
+                array('attribute_id', 'attribute_code')
+            )
+            ->joinLeft(
+                array('avc' => 'catalog_product_entity_varchar'),
+                'e.entity_id = avc.entity_id AND avc.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avi' => 'catalog_product_entity_int'),
+                'e.entity_id = avi.entity_id AND avi.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avd' => 'catalog_product_entity_decimal'),
+                'e.entity_id = avd.entity_id AND avd.attribute_id = a.attribute_id',
+                array()
+            )
+            ->joinLeft(
+                array('avt' => 'catalog_product_entity_text'),
+                'e.entity_id = avt.entity_id AND avt.attribute_id = a.attribute_id',
+                array()
+            )
+            ->where('avc.value is NOT NULL OR avi.value is NOT NULL OR avd.value is NOT NULL OR avt.value is NOT NULL')
+            ->where('a.is_user_defined = ?', 1); 
+
+    echo $select->columns(new Zend_Db_Expr("CONCAT_WS(' ', avi.value, avd.value) AS combined_value"));
+
     }
 
 
